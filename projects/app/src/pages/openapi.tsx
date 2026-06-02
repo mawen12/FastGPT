@@ -9,6 +9,7 @@ const ApiReferenceReact = dynamic(
   { ssr: false }
 );
 
+// /openai
 function OpenAPIPage() {
   return (
     <Box w="100vw" h="100vh" overflow="auto">

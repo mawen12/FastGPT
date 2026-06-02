@@ -55,7 +55,9 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
   const setLayout = Component.setLayout || ((page) => <>{page}</>);
 
   const router = useRouter();
+  // 是否展示 head
   const showHead = !router?.pathname || !routesWithCustomHead.includes(router.pathname);
+  // 是否使用 layout
   const shouldUseLayout = !router?.pathname || !routesWithoutLayout.includes(router.pathname);
   const headDesc = appClientEnv.systemDescription || t('common:system_intro', { title });
   const headIcon = getWebReqUrl(feConfigs?.favicon || appClientEnv.systemFavicon);

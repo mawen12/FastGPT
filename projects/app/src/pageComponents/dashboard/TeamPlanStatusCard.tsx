@@ -160,15 +160,20 @@ const TeamPlanStatusCard = () => {
       )}
 
       <Flex flexDirection={'column'} gap={1}>
+        {/* 点数行 */}
         <Flex color={'myGray.500'} flexWrap={'wrap'} gap={1}>
+          {/* Used point 文本 */}
           <Box whiteSpace={'noWrap'}>{t('app:used_points')}</Box>
           <Flex gap={'1px'} alignItems={'center'} flexShrink={0}>
+            {/* ai 点数或者是积分使用量,以 xx/100 */}
             <Box color={`${valueColorSchema(aiPointsUsageMap.rate)}.500`}>
               {aiPointsUsageMap.value}
             </Box>
             /<Box>{aiPointsUsageMap.max}</Box>
           </Flex>
         </Flex>
+
+        {/* 使用量行 */}
         <Flex h={2} w={'full'} p={0.5} bg={'primary.50'} borderRadius={'md'}>
           <Box
             borderRadius={'sm'}
@@ -177,8 +182,12 @@ const TeamPlanStatusCard = () => {
             bg={`${valueColorSchema(aiPointsUsageMap.rate)}.500`}
           />
         </Flex>
+
+        {/* 套餐行 */}
         <Flex>
+          {/* 当前套餐 */}
           <Box color={'myGray.500'}> {t('app:current_package')}</Box>
+          {/* 套餐名称,点击跳转到 /price 页面 */}
           <Box
             color={'primary.400'}
             cursor={'pointer'}
@@ -189,6 +198,8 @@ const TeamPlanStatusCard = () => {
             {t(planName as any)}
           </Box>
         </Flex>
+
+        {/* 升级套餐按钮,点击跳转到 /price 页面 */}
         <Button
           borderRadius={'6px'}
           bg={'linear-gradient(90deg, #64C2DB 0%, #7476ED 29.42%, #C994DF 57.87%, #E56F8C 95.82%)'}

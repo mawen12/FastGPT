@@ -17,6 +17,7 @@ const errorText: I18nStringType = {
     '出現未捕獲的異常。\n\n1. 私有部署用戶，90%是由於模型配置不正確/模型未啟用導致。 \n。\n\n2. 部分系統不兼容相關API。\n大部分是蘋果的safari 瀏覽器導致，可以嘗試更換 chrome。\n\n3. 請關閉瀏覽器翻譯功能，部分翻譯導致頁面崩潰。\n\n\n排除3後，打開控制台的 console 查看具體報錯信息。\n\n如果提示 xxx undefined 的話，就是模型配置不正確，檢查：\n1. 請確保系統內每個系列模型至少有一個可用，可以在【賬號-模型提供商】中檢查。\n\n2. 請確保至少有一個知識庫文件處理模型（語言模型中有一個開關），否則知識庫創建會報錯。\n\n2. 檢查模型中一些“對象”參數是否異常（數組和對象），如果為空，可以嘗試給個空數組或空對象。'
 };
 
+// /error 错误页面,
 function Error() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
@@ -31,6 +32,7 @@ function Error() {
       log: errorLogger.getLogs()
     });
 
+    // 从配置中读取信息,以便分析错误原因
     let modelError = false;
     if (llmModelList.length === 0) {
       modelError = true;
@@ -47,7 +49,9 @@ function Error() {
       });
     }
 
+    // 2s后,进行路由跳转
     setTimeout(() => {
+      // 对于模型相关的错误,跳转到 /account/model,否则跳转到首页
       if (modelError) {
         router.push('/account/model');
       } else {
@@ -56,6 +60,7 @@ function Error() {
     }, 2000);
   });
 
+  // 展示错误内容
   return <Box whiteSpace={'pre-wrap'}>{errorText[lang as keyof typeof errorText]}</Box>;
 }
 

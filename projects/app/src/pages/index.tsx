@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import Loading from '@fastgpt/web/components/common/MyLoading';
 import { useRouter } from 'next/router';
 
+// /,默认展示 /dashboard/agent
 const index = () => {
   const router = useRouter();
   useEffect(() => {

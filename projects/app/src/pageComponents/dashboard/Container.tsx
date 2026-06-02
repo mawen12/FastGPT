@@ -110,6 +110,7 @@ const DashboardContainer = ({
     }[]
   >(() => {
     return [
+      //
       {
         groupId: TabEnum.agent,
         groupAvatar: 'core/chat/sidebar/star',
@@ -260,6 +261,7 @@ const DashboardContainer = ({
   const isLoading = isLoadingTemplatesTags || isLoadingTemplates;
 
   return (
+    // 全高
     <Box h={'100%'}>
       {/* Side bar */}
       {(isPc || isOpenSidebar) && (
@@ -289,6 +291,7 @@ const DashboardContainer = ({
             sx={{ '&::-webkit-scrollbar': { width: '4px' } }}
           >
             {groupList.map((group) => {
+              // 计算当前选中的 tab
               const selected = currentTab === group.groupId;
 
               return (
