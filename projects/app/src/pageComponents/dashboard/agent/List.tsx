@@ -165,6 +165,7 @@ const List = () => {
     const isTool = ToolTypeList.includes(app.type);
     const isFolder = AppFolderTypeList.includes(app.type);
     return (
+      // 悬浮的tooltip
       <MyTooltip
         key={app._id}
         label={
@@ -175,6 +176,7 @@ const List = () => {
               : t('app:go_to_chat')
         }
       >
+        {/* 卡片 */}
         <MyBox
           data-virtual-item=""
           py={4}
@@ -219,15 +221,21 @@ const List = () => {
             isFolder: app.type === AppTypeEnum.folder || app.type === AppTypeEnum.toolFolder
           })}
         >
+          {/* 首行 */}
           <Grid templateColumns="auto 1fr auto" alignItems="center" width="100%" gap={2}>
+            {/* 头像 */}
             <Avatar src={app.avatar} borderRadius={'sm'} w={'1.5rem'} />
+            {/* 名称 */}
             <Box color={'myGray.900'} fontWeight={'medium'} minWidth={0} overflow="hidden">
               <Box className={'textEllipsis'}>{app.name}</Box>
             </Box>
+            {/* 类型 */}
             <Box justifySelf="end" mr={-5}>
               <AppTypeTag type={app.type} />
             </Box>
           </Grid>
+
+          {/* 介绍 */}
           <Box
             flex={'1 0 56px'}
             mt={3}
@@ -240,14 +248,19 @@ const List = () => {
               {app.intro || t('common:no_intro')}
             </Box>
           </Box>
+
+          {/* 底部 */}
           <HStack h={'24px'} fontSize={'mini'} color={'myGray.500'} w="full">
+            {/* 左侧 */}
             <HStack flex={'1 0 0'}>
+              {/* 用户的头像和邮箱信息 */}
               <UserBox
                 sourceMember={app.sourceMember}
                 fontSize="xs"
                 avatarSize="1rem"
                 spacing={0.5}
               />
+              {/* 权限 */}
               <PermissionIconText
                 private={app.private}
                 color={'myGray.500'}
@@ -255,8 +268,11 @@ const List = () => {
                 w={'0.875rem'}
               />
             </HStack>
+
+            {/* 右侧，及其悬浮时的效果 */}
             <HStack>
               {isPc && (
+                // 最后的更新时间
                 <HStack spacing={0.5} className="time">
                   <MyIcon name={'history'} w={'0.85rem'} color={'myGray.400'} />
                   <Box color={'myGray.500'}>
@@ -268,7 +284,9 @@ const List = () => {
                 ? app.permission.hasManagePer
                 : app.permission.hasWritePer || app.permission.hasReadChatLogPer) && (
                 <Box className="more" display={['', 'none']}>
+                  {/* 悬浮卡片的时候展示的内容 */}
                   <MyMenu
+                    // 触发按钮
                     Button={
                       <IconButton
                         size={'xsSquare'}
@@ -277,15 +295,17 @@ const List = () => {
                         aria-label={''}
                       />
                     }
+                    // 列表
                     menuList={[
                       ...([
                         AppTypeEnum.simple,
                         AppTypeEnum.workflow,
-                        AppTypeEnum.chatAgent
+                        AppTypeEnum.chatAgent // chat
                       ].includes(app.type)
                         ? [
                             {
                               children: [
+                                // go to chat 的按钮，跳转到聊天功能
                                 {
                                   icon: 'core/chat/chatLight',
                                   type: 'grayBg' as MenuItemType,
@@ -301,7 +321,7 @@ const List = () => {
                             }
                           ]
                         : []),
-                      ...([AppTypeEnum.workflowTool].includes(app.type)
+                      ...([AppTypeEnum.workflowTool].includes(app.type) // work flow
                         ? [
                             {
                               children: [
@@ -324,6 +344,7 @@ const List = () => {
                         ? [
                             {
                               children: [
+                                // 编辑按钮
                                 {
                                   icon: 'edit',
                                   type: 'grayBg' as MenuItemType,
@@ -347,6 +368,7 @@ const List = () => {
                                 !(parentApp ? parentApp.permission : app.permission).hasManagePer
                                   ? []
                                   : [
+                                      // move to 按钮
                                       {
                                         icon: 'common/file/move',
                                         type: 'grayBg' as MenuItemType,
@@ -356,6 +378,7 @@ const List = () => {
                                     ]),
                                 ...(app.permission.hasManagePer
                                   ? [
+                                      // Permission 按钮
                                       {
                                         icon: 'key',
                                         type: 'grayBg' as MenuItemType,
@@ -377,6 +400,7 @@ const List = () => {
                         : [
                             {
                               children: [
+                                // copy 按钮
                                 {
                                   icon: 'copy',
                                   type: 'grayBg' as MenuItemType,
@@ -393,6 +417,7 @@ const List = () => {
                         ? [
                             {
                               children: [
+                                // 删除按钮
                                 {
                                   type: 'danger' as const,
                                   icon: 'delete',
@@ -445,11 +470,13 @@ const List = () => {
             gridGap={5}
             alignItems={'stretch'}
           >
+            {/* 创建按钮 */}
             {hasCreatePer ? <ListCreateButton appType={appType} /> : <ForbiddenCreateButton />}
           </Grid>
         )
       ) : (
         <>
+          {/* 以网格布局展示每个 agent 卡片 */}
           <Grid
             ref={gridRef}
             py={4}
@@ -466,8 +493,14 @@ const List = () => {
           </Grid>
         </>
       )}
+
+      {/* 删除确认 modal */}
       <DeleteConfirmModal />
+
+      {/* copy 确认 modal */}
       <ConfirmCopyModal />
+
+      {/* Edit information 的 modal */}
       {!!editedApp && (
         <EditResourceModal
           {...editedApp}
@@ -478,6 +511,8 @@ const List = () => {
           onEdit={({ id, ...data }) => onUpdateApp(id, data)}
         />
       )}
+
+      {/* Permission 编辑 modal */}
       {!!editPerApp && (
         <ConfigPerModal
           {...(editPerApp.permission.isOwner && {
@@ -519,6 +554,8 @@ const List = () => {
           onClose={() => setEditPerAppId(undefined)}
         />
       )}
+
+      {/* Move to 确认 modal */}
       <MoveConfirmModal />
     </>
   );

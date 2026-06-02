@@ -69,6 +69,7 @@ export type CreateAppType =
   | AppTypeEnum.mcpToolSet
   | AppTypeEnum.httpToolSet;
 
+// 创建 Agent/Workflow/ 的页面
 const CreateAppsPage = () => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -191,6 +192,7 @@ const CreateAppsPage = () => {
   return (
     <Box h={'100vh'} overflow={'hidden'}>
       <Flex px={2} py={3} bg={'myGray.25'}>
+        {/* 顶部：返回按钮 */}
         <Button
           variant={'transparentBase'}
           leftIcon={<MyIcon name={'common/backLight'} w={4} color={'myGray.600'} />}
@@ -206,6 +208,7 @@ const CreateAppsPage = () => {
           {t('common:Create') + (isToolType ? t('app:type.Tool') : ' Agent')}
         </Button>
       </Flex>
+
       <Flex bg={'white'} flex={1} gap={7} p={6} h={'calc(100vh - 60px)'}>
         <Flex
           flex={1}
@@ -233,10 +236,14 @@ const CreateAppsPage = () => {
             }
           }}
         >
+          {/* 左侧选择的 */}
           <Box mb={5} borderBottom={'1px solid'} borderColor={'myGray.200'}>
+            {/* agent type */}
             <Box color={'myGray.900'} fontWeight={'medium'} mb={2.5}>
               {(isToolType ? t('app:type.Tool') : 'Agent ') + t('common:support.standard.type')}
             </Box>
+
+            {/* 三种 agent 类型 */}
             <SimpleGrid columns={3} gap={2.5} pb={5}>
               {Object.values(createAppTypeMap)
                 .filter((option) =>
@@ -260,11 +267,15 @@ const CreateAppsPage = () => {
                 ))}
             </SimpleGrid>
           </Box>
+
+          {/* 下半部分 */}
           <Box mb={5}>
+            {/* icon  */}
             <Box color={'myGray.900'} fontWeight={'medium'} mb={2.5} letterSpacing={'0.15px'}>
               {t('common:app_icon_and_name')}
             </Box>
             <Flex alignItems={'center'}>
+              {/* 点击设置和展示头像 */}
               <MyTooltip label={t('common:set_avatar')}>
                 <Flex
                   borderRadius={'6px'}
@@ -284,6 +295,8 @@ const CreateAppsPage = () => {
                   />
                 </Flex>
               </MyTooltip>
+
+              {/* agent 名称输入框 */}
               <Input
                 flex={1}
                 h={'34px'}
@@ -291,6 +304,7 @@ const CreateAppsPage = () => {
                 placeholder={t('app:unnamed_app')}
                 {...register('name')}
               />
+              {/* 创建按钮 */}
               {selectedAppType !== AppTypeEnum.mcpToolSet && (
                 <Button
                   isLoading={isCreating}
@@ -302,12 +316,16 @@ const CreateAppsPage = () => {
               )}
             </Flex>
           </Box>
+
+          {/* 模版部分 */}
           {templateData?.list && templateData.list.length > 0 && (
             <Box>
               <Flex justifyContent={'space-between'} mb={2.5}>
+                {/* 文本：创建模版 */}
                 <Box color={'myGray.900'} fontWeight={'medium'}>
                   {t('app:create_by_template')}
                 </Box>
+                {/* 模板市场 */}
                 <Flex
                   alignItems={'center'}
                   cursor={'pointer'}
@@ -324,6 +342,8 @@ const CreateAppsPage = () => {
                   />
                 </Flex>
               </Flex>
+
+              {/* 模版列表 */}
               <Fade in={!isLoadingTemplates && templateData?.list && templateData.list.length > 0}>
                 <SimpleGrid columns={[1, 3]} gridGap={2.5}>
                   {templateData.list.map((item) => (
@@ -399,10 +419,11 @@ const CreateAppsPage = () => {
             </Box>
           )}
 
-          {/* mcp */}
+          {/* 创建 mcp */}
           {selectedAppType === AppTypeEnum.mcpToolSet && (
             <>
               <Box mb={5}>
+                {/* 认证类型表单 */}
                 <HeaderAuthForm
                   headerSecretValue={mcpHeaderSecret || {}}
                   onChange={(data) => {
@@ -412,6 +433,7 @@ const CreateAppsPage = () => {
                 />
               </Box>
 
+              {/* 地址 */}
               <Box mb={5}>
                 <Box color={'myGray.900'} fontWeight={'medium'} mb={2.5}>
                   {t('app:MCP_tools_url')}
@@ -443,6 +465,7 @@ const CreateAppsPage = () => {
                 </Flex>
               </Box>
 
+              {/* tool 列表 */}
               <Box mb={5}>
                 <Box color={'myGray.900'} fontWeight={'medium'} mb={2.5}>
                   {t('app:MCP_tools_list')}
@@ -525,7 +548,7 @@ const CreateAppsPage = () => {
               </Flex>
             </>
           )}
-          {/* http */}
+          {/* 创建 http */}
           {selectedAppType === AppTypeEnum.httpToolSet && (
             <>
               <Box mb={5}>
@@ -566,6 +589,8 @@ const CreateAppsPage = () => {
             </>
           )}
         </Flex>
+
+        {/* 右侧 */}
         {isPc && (
           <Box flex={1} position={'relative'}>
             <Box
@@ -576,11 +601,14 @@ const CreateAppsPage = () => {
               transform={'translateX(-50%)'}
               w={'full'}
             >
+              {/* 标题名称 */}
               <Flex alignItems={'center'} justifyContent={'center'}>
                 <Box color={'myGray.900'} fontSize={'32px'} fontWeight={'medium'}>
                   {t(createAppTypeMap[selectedAppType].title)}
                 </Box>
               </Flex>
+
+              {/* 描述 */}
               <Flex
                 color={'myGray.500'}
                 fontSize={'md'}
@@ -593,6 +621,7 @@ const CreateAppsPage = () => {
                 {t(createAppTypeMap[selectedAppType].description)}
               </Flex>
             </Box>
+            {/* 对应类型的背景图片 */}
             <MyImage
               src={createAppTypeMap[selectedAppType].imgUrl}
               w={'full'}
@@ -606,6 +635,8 @@ const CreateAppsPage = () => {
           </Box>
         )}
       </Flex>
+
+      {/* 头像上传 */}
       <AvatarUploader />
     </Box>
   );

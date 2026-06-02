@@ -134,6 +134,7 @@ const TemplateCreatePanel = ({ type }: { type: AppTypeEnum | 'all' }) => {
           {t('app:create_from_template')}
         </Box>
         <Flex gap={4} alignItems={'center'}>
+          {/* 刷新按钮 */}
           {!isCollapsed && !!templateData?.total && templateData.total > 12 && (
             <Button
               size={'sm'}
@@ -149,6 +150,7 @@ const TemplateCreatePanel = ({ type }: { type: AppTypeEnum | 'all' }) => {
               {t('app:refresh_templates')}
             </Button>
           )}
+          {/* 收起和展示按钮 */}
           <Button
             variant={'transparentBase'}
             color={'myGray.500'}
@@ -164,6 +166,7 @@ const TemplateCreatePanel = ({ type }: { type: AppTypeEnum | 'all' }) => {
         </Flex>
       </Flex>
 
+      {/* 由上面的收起和展示按钮控制收起和展示 */}
       <Collapse
         in={!isCollapsed}
         animateOpacity
@@ -202,6 +205,7 @@ const TemplateCreatePanel = ({ type }: { type: AppTypeEnum | 'all' }) => {
               ))
             : templateData?.list.map((item, index) => {
                 return (
+                  // 单个模板卡片
                   <MyBox
                     key={index}
                     bg={'white'}
@@ -237,6 +241,7 @@ const TemplateCreatePanel = ({ type }: { type: AppTypeEnum | 'all' }) => {
                     gap={2}
                     alignItems={'center'}
                   >
+                    {/* 模版卡片 */}
                     <Flex
                       className="template-content"
                       gap={2}
@@ -244,7 +249,9 @@ const TemplateCreatePanel = ({ type }: { type: AppTypeEnum | 'all' }) => {
                       transition={'filter 0.1s ease-in-out'}
                       w={'full'}
                     >
+                      {/* 模版头像 */}
                       <Avatar src={item.avatar} w={10} h={10} borderRadius={'4px'} />
+                      {/*  */}
                       <Box flex={1} minW={0} h={12}>
                         <Flex
                           fontSize={'16px'}
@@ -255,9 +262,11 @@ const TemplateCreatePanel = ({ type }: { type: AppTypeEnum | 'all' }) => {
                           justifyContent={'space-between'}
                         >
                           <Flex alignItems={'center'} gap={'7px'} flex={1} minW={0}>
+                            {/* 模版名称 */}
                             <Box className="textEllipsis2" whiteSpace={'nowrap'}>
                               {item.name}
                             </Box>
+                            {/* Promtoted 标识 */}
                             {item.isPromoted && (
                               <Box
                                 p={'1px'}
@@ -277,6 +286,7 @@ const TemplateCreatePanel = ({ type }: { type: AppTypeEnum | 'all' }) => {
                               </Box>
                             )}
                           </Flex>
+                          {/* 模板图标 */}
                           <MyIcon
                             name={
                               appTypeTagMap[item.type as keyof typeof appTypeTagMap]?.icon as any
@@ -286,6 +296,8 @@ const TemplateCreatePanel = ({ type }: { type: AppTypeEnum | 'all' }) => {
                             flexShrink={0}
                           />
                         </Flex>
+
+                        {/* 模版描述 */}
                         <Box
                           fontSize={item.isPromoted ? '16px' : '14px'}
                           fontWeight={item.isPromoted ? 'medium' : 'normal'}
@@ -298,6 +310,8 @@ const TemplateCreatePanel = ({ type }: { type: AppTypeEnum | 'all' }) => {
                         </Box>
                       </Box>
                     </Flex>
+
+                    {/* 悬浮卡片时的效果 */}
                     <Flex
                       className="hover-text"
                       position={'absolute'}
@@ -329,6 +343,7 @@ const TemplateCreatePanel = ({ type }: { type: AppTypeEnum | 'all' }) => {
                   </MyBox>
                 );
               })}
+          {/* more 卡片 */}
           <Box
             borderRadius={'10px'}
             overflow={'hidden'}
@@ -349,6 +364,7 @@ const TemplateCreatePanel = ({ type }: { type: AppTypeEnum | 'all' }) => {
             minH={20}
             maxW={160}
           >
+            {/* more 底层的图片 */}
             <Box
               as="img"
               src={getWebReqUrl('/imgs/app/moreTemplateBg.svg')}
@@ -358,6 +374,7 @@ const TemplateCreatePanel = ({ type }: { type: AppTypeEnum | 'all' }) => {
               transition="transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)"
               transform={isHoverMoreButton ? 'scale(1.2)' : 'scale(1.1)'}
             />
+            {/* more 文本 */}
             <Box
               position={'relative'}
               left={3}

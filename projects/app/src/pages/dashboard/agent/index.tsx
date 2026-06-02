@@ -109,7 +109,10 @@ const MyApps = ({ MenuIcon }: { MenuIcon: JSX.Element }) => {
           overflowX={'hidden'}
         >
           {/* Only shown on pc root page */}
+          {/* 顶部的模板 */}
           {!folderDetail && isPc && hasCreatePer && <TemplateCreatePanel type={appType} />}
+
+          {/* Agent */}
           <Flex alignItems={'center'}>
             {!isPc ? (
               MenuIcon
@@ -130,13 +133,19 @@ const MyApps = ({ MenuIcon }: { MenuIcon: JSX.Element }) => {
                 />
               </Box>
             ) : (
+              // 左侧文本
               <Box color={'myGray.900'} fontSize={'20px'} fontWeight={'medium'}>
                 Agent
               </Box>
             )}
+
+            {/* 空白 */}
             <Flex flex={1} />
+
+            {/* 右侧 */}
             <Flex alignItems={'center'} gap={3}>
               {isPc && (
+                // 搜索输入框，用于过滤底部所有的 agent
                 <SearchInput
                   maxW={['auto', '250px']}
                   value={searchKey}
@@ -149,6 +158,7 @@ const MyApps = ({ MenuIcon }: { MenuIcon: JSX.Element }) => {
 
               {hasCreatePer && (
                 <>
+                  {/* Edit 按钮 */}
                   <Button
                     variant={'grayBase'}
                     leftIcon={<MyIcon name={'common/addLight'} w={'18px'} mr={-1} />}
@@ -157,6 +167,8 @@ const MyApps = ({ MenuIcon }: { MenuIcon: JSX.Element }) => {
                   >
                     {t('common:Folder')}
                   </Button>
+
+                  {/* Import 按钮 */}
                   <Button
                     variant={'grayBase'}
                     leftIcon={<MyIcon name={'common/importLight'} w={'14px'} />}
@@ -169,6 +181,7 @@ const MyApps = ({ MenuIcon }: { MenuIcon: JSX.Element }) => {
               )}
             </Flex>
           </Flex>
+
           {!isPc && (
             <Box mt={2}>
               {
@@ -183,6 +196,7 @@ const MyApps = ({ MenuIcon }: { MenuIcon: JSX.Element }) => {
             </Box>
           )}
 
+          {/* 展示列表 */}
           <MyBox flex={'1 0 0'} isLoading={myApps.length === 0 && isFetchingApps}>
             <List />
           </MyBox>
@@ -231,6 +245,7 @@ const MyApps = ({ MenuIcon }: { MenuIcon: JSX.Element }) => {
         )}
       </Flex>
 
+      {/* 编辑folder按钮 */}
       {!!editFolder && (
         <EditFolderModal
           {...editFolder}
@@ -239,6 +254,8 @@ const MyApps = ({ MenuIcon }: { MenuIcon: JSX.Element }) => {
           onEdit={({ id, ...data }) => onUpdateApp(id, data)}
         />
       )}
+
+      {/* Import modal */}
       {isOpenJsonImportModal && <JsonImportModal onClose={onCloseJsonImportModal} />}
     </Flex>
   );

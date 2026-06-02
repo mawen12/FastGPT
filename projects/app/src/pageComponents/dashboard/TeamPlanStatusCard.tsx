@@ -12,6 +12,7 @@ import { Box, Button, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { webPushTrack } from '@/web/common/middle/tracks/utils';
 
+// 左侧底部的使用点数状态
 const TeamPlanStatusCard = () => {
   const { t } = useTranslation();
   const { teamPlanStatus, userInfo } = useUserStore();
@@ -101,6 +102,7 @@ const TeamPlanStatusCard = () => {
       fontSize={'xs'}
       fontWeight={'medium'}
     >
+      {/* 广告栏 */}
       {!shouldHide && operationalAd?.operationalAdImage && (
         <Flex mb={2} position={'relative'}>
           <Box

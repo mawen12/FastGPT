@@ -110,7 +110,7 @@ const DashboardContainer = ({
     }[]
   >(() => {
     return [
-      //
+      // 顶部的功能分组
       {
         groupId: TabEnum.agent,
         groupAvatar: 'core/chat/sidebar/star',
@@ -284,6 +284,7 @@ const DashboardContainer = ({
           flexDirection={'column'}
           justifyContent={'space-between'}
         >
+          {/* 顶部 */}
           <Box
             flex={1}
             overflowY={'auto'}
@@ -378,12 +379,14 @@ const DashboardContainer = ({
               );
             })}
           </Box>
+          {/* 底部 */}
           <Box px={2.5}>
             <TeamPlanStatusCard />
           </Box>
         </MyBox>
       )}
 
+      {/* 右侧内容 */}
       <Box h={'100%'} pl={isPc ? `220px` : 0} position={'relative'} bg={'white'}>
         {children({
           templateTags,
