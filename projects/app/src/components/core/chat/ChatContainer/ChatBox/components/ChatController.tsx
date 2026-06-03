@@ -98,6 +98,7 @@ const ChatController = ({
             }
           }}
         >
+          {/* Copy 按钮 */}
           <MyTooltip label={t('common:Copy')}>
             <MyIcon
               {...controlIconStyle}
@@ -107,8 +108,10 @@ const ChatController = ({
               onClick={() => copyData(chatText)}
             />
           </MyTooltip>
+          {/* 仅在父组件传递了删除回调，且当前不在"正在对话/生成中"状态，且不是日志模式 */}
           {!!onDelete && !isChatting && chatType !== 'log' && (
             <>
+              {/* Retry 按钮，仅在父组件传递了重试回调 */}
               {onRetry && (
                 <MyTooltip label={t('common:core.chat.retry')}>
                   <MyIcon
@@ -119,6 +122,7 @@ const ChatController = ({
                   />
                 </MyTooltip>
               )}
+              {/* Delete 按钮 */}
               <MyTooltip label={t('common:Delete')}>
                 <MyIcon
                   {...controlIconStyle}
@@ -129,6 +133,8 @@ const ChatController = ({
               </MyTooltip>
             </>
           )}
+
+          {/* 开启语音图标且支持语音功能 */}
           {showVoiceIcon &&
             hasAudio &&
             (() => {
@@ -202,6 +208,7 @@ const ChatController = ({
                 <>
                   {!!chat.userGoodFeedback && (
                     <Box position={'relative'}>
+                      {/* 点赞 */}
                       <MyIcon
                         {...controlIconStyle}
                         color={'green.500'}
@@ -225,6 +232,7 @@ const ChatController = ({
 
                   {!!chat.userBadFeedback && (
                     <Box position={'relative'}>
+                      {/* 点踩 */}
                       <MyIcon
                         {...controlIconStyle}
                         color={'yellow.500'}
