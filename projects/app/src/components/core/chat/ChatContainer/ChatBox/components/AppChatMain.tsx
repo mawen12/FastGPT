@@ -45,22 +45,29 @@ const AppChatMain = ({
   recordsListProps
 }: AppChatMainProps) => {
   return (
+    // 滚动区域
     <ScrollData
       ScrollContainerRef={ScrollContainerRef}
+      // 自适应高度
       flex={'1 0 0'}
       h={0}
+      // 占满宽度
       w={'100%'}
+      // 覆盖式滚动条，滚动条不会挤压内容宽度
       overflow={'overlay'}
       px={[4, 0]}
       pb={6}
     >
       <Box maxW={['100%', '92%']} h={'100%'} mx={'auto'}>
+        {/* 是否展示欢迎语 */}
         {!!welcomeText && <WelcomeBox welcomeText={welcomeText} />}
 
+        {/*  */}
         <Box id="variable-input">
           <VariableInputForm chatStarted={chatStarted} chatForm={chatForm} chatType={chatType} />
         </Box>
 
+        {/* 聊天记录 */}
         <ChatRecordsList {...recordsListProps} />
       </Box>
     </ScrollData>

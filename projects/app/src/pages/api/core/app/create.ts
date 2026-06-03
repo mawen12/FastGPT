@@ -112,6 +112,7 @@ async function handler(req: ApiRequestProps<CreateAppBodyType>) {
 
 export default NextAPI(handler);
 
+// 创建 app
 export const onCreateApp = async ({
   parentId,
   name,
@@ -145,30 +146,42 @@ export const onCreateApp = async ({
   templateId?: string;
   session?: ClientSession;
 }) => {
+  // 如果有父级，则读取父级的 app
   if (parentId) {
     const parentApp = await MongoApp.findById(parentId, 'type').lean();
 
+    // 父级类型合法性校验
+    // 工具类应用只能创建在 tool folder 下
     if (ToolTypeList.includes(type) && parentApp?.type !== AppTypeEnum.toolFolder) {
       return Promise.reject('tool type can only be created in tool folder');
     }
+    // agent 类应用只能创建在 folder 下
     if (AppTypeList.includes(type) && parentApp?.type !== AppTypeEnum.folder) {
       return Promise.reject('agent type can only be created in agent folder');
     }
   }
 
+  // 定义事务内创建函数
   const create = async (session: ClientSession) => {
+    // 计算 resourceRefs，从工作流节点提取外部资源引用
     const resourceRefs = extractAppResourceRefsFromNodes(modules);
+
+    // 头像处理
     const _avatar = await (async () => {
+      // 没传 templateId，直接用请求离得 avatar
       if (!templateId) return avatar;
 
+      // 传了 templateId，读取模板头像
       const template = await MongoAppTemplate.findOne({ templateId }, 'avatar').lean();
       if (!template?.avatar) return avatar;
 
       const s3AvatarSource = getS3AvatarSource();
+      // 若模板头像不是 S3 对象键，直接复用 URL
       if (!isS3ObjectKey(template.avatar?.slice(s3AvatarSource.prefix.length), 'avatar')) {
         return template.avatar;
       }
 
+      // 复制一份到当前团队临时资源，避免直接引用模板资源
       return await copyAvatarImage({
         teamId,
         imageUrl: template.avatar,
@@ -177,6 +190,7 @@ export const onCreateApp = async ({
       });
     })();
 
+    // 创建 app 主记录
     const [app] = await MongoApp.create(
       [
         {
@@ -193,6 +207,7 @@ export const onCreateApp = async ({
           version: 'v2',
           pluginData,
           templateId,
+          // 只有非 folder 类型才能携带 resourceRefs
           ...(!AppFolderTypeList.includes(type!) && { resourceRefs })
         }
       ],
@@ -201,7 +216,9 @@ export const onCreateApp = async ({
 
     const appId = String(app._id);
 
+    // 只有非 folder 类型才能具有版本快照
     if (!AppFolderTypeList.includes(type!)) {
+      // 创建发布版本快照
       await MongoAppVersion.create(
         [
           {
@@ -213,6 +230,7 @@ export const onCreateApp = async ({
             versionName: name,
             username,
             avatar: userAvatar,
+            // 初始可发布版本
             isPublish: true,
             resourceRefs
           }
@@ -221,20 +239,25 @@ export const onCreateApp = async ({
       );
     }
 
+    // 建立资源权限
     await MongoResourcePermission.insertOne({
       teamId,
       tmbId,
       resourceId: appId,
+      // 保证新应用立刻可管控
       permission: OwnerRoleVal,
       resourceType: PerResourceTypeEnum.app
     });
 
+    // 刷新头像
     await getS3AvatarSource().refreshAvatar(_avatar, undefined, session);
 
+    // 触发父目录更新时间
     updateParentFoldersUpdateTime({
       parentId
     });
 
+    // 异步审计日志
     (async () => {
       addAuditLog({
         tmbId,
@@ -250,9 +273,11 @@ export const onCreateApp = async ({
     return appId;
   };
 
+  // 如果调用方传了 session，则复用外部事务
   if (session) {
     return create(session);
   } else {
+    // 否则自建事务执行
     return await mongoSessionRun(create);
   }
 };

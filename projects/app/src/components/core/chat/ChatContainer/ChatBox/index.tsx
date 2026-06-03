@@ -542,6 +542,7 @@ const ChatBox = ({
       h={'100%'}
       position={'relative'}
     >
+      {/* 加载 html2pdf.bundle.min.js 脚本 */}
       <Script src={getWebReqUrl('/js/html2pdf.bundle.min.js')} strategy="lazyOnload"></Script>
       {/* chat box container */}
       {isHomeRender ? (
@@ -576,6 +577,7 @@ const ChatBox = ({
         </MyBox>
       ) : (
         <>
+          {/* 聊天区 */}
           <AppChatMain
             ScrollData={ScrollData}
             ScrollContainerRef={ScrollContainerRef}
@@ -585,6 +587,8 @@ const ChatBox = ({
             chatType={chatType}
             recordsListProps={recordsListProps}
           />
+
+          {/* 输入框 */}
           {canRenderChatInput && (
             <Box
               px={[3, 5]}

@@ -212,6 +212,7 @@ function request(
 
   return instance
     .request({
+      // 对所有请求添加 /api 前缀
       baseURL: getWebReqUrl('/api'),
       url,
       method,

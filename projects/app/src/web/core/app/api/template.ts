@@ -9,9 +9,19 @@ import type {
   ListAppTemplateResponseType
 } from '@fastgpt/global/openapi/core/app/template/api';
 
+/**
+ * 获取模板列表
+ *
+ * GET /core/app/template/list
+ */
 export const getTemplateMarketItemList = (data: ListAppTemplateQueryType) =>
   GET<ListAppTemplateResponseType>(`/core/app/template/list`, data);
 
+/**
+ * 获取模板详情
+ *
+ * GET /core/app/template/detail?templateId=
+ */
 export const getTemplateMarketItemDetail = (
   templateId: GetAppTemplateDetailQueryType['templateId']
 ) =>
@@ -25,6 +35,11 @@ export const getTemplateMarketItemDetail = (
     }
   );
 
+/**
+ * 获取模板标签列表
+ *
+ * GET /proApi/core/app/template/getTemplateTypes
+ */
 export const getTemplateTagList = () => {
   return useSystemStore.getState()?.feConfigs?.isPlus
     ? GET<TemplateTypeSchemaType[]>('/proApi/core/app/template/getTemplateTypes')

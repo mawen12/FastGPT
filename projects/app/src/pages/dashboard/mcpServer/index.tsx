@@ -35,6 +35,7 @@ const UsageWay = dynamic(() => import('@/pageComponents/dashboard/mcp/usageWay')
   ssr: false
 });
 
+// MCP Services 页面
 const McpServer = () => {
   const { t } = useTranslation();
   const { isPc } = useSystem();
@@ -66,15 +67,19 @@ const McpServer = () => {
         {({ MenuIcon }) => (
           <MyBox isLoading={isLoading} h={'100%'} p={6}>
             {isPc ? (
+              // 顶部
               <Flex alignItems={'flex-end'} justifyContent={'space-between'}>
                 <Box>
+                  {/* MCP Services 名称 */}
                   <Box fontSize={'lg'} color={'myGray.900'} fontWeight={500}>
                     {t('dashboard_mcp:mcp_server')}
                   </Box>
+                  {/* MCP Services 描述 */}
                   <Box fontSize={'xs'} color={'myGray.500'}>
                     {t('dashboard_mcp:mcp_server_description')}
                   </Box>
                 </Box>
+                {/* Create a new service 按钮 */}
                 <Button
                   isDisabled={!userInfo?.permission.hasApikeyCreatePer}
                   onClick={() => setEditMcp(defaultForm)}
@@ -108,6 +113,7 @@ const McpServer = () => {
             <TableContainer mt={4} bg={'white'} borderRadius={'md'}>
               <Table>
                 <Thead>
+                  {/* 表头 */}
                   <Tr borderBottom={'base'}>
                     <Th bg={'white'}>{t('dashboard_mcp:mcp_name')}</Th>
                     <Th bg={'white'}>{t('dashboard_mcp:mcp_apps')}</Th>
@@ -115,13 +121,18 @@ const McpServer = () => {
                   </Tr>
                 </Thead>
                 <Tbody fontSize={'sm'}>
+                  {/* 表记录 */}
                   {mcpServerList.map((mcp) => {
                     return (
                       <Tr key={mcp._id} fontWeight={500} fontSize={'sm'} color={'myGray.900'}>
+                        {/* MCP 名称 */}
                         <Td>{mcp.name}</Td>
+                        {/* MCP 关联应用长度 */}
                         <Td>{mcp.apps.length}</Td>
                         <Td>
+                          {/* 横向排列 */}
                           <HStack>
+                            {/* Get started 按钮 */}
                             <Button
                               mr={4}
                               variant={'whiteBase'}
@@ -130,6 +141,8 @@ const McpServer = () => {
                             >
                               {t('dashboard_mcp:start_use')}
                             </Button>
+
+                            {/* Edit 按钮 */}
                             <MyIconButton
                               icon="edit"
                               onClick={() =>
@@ -141,6 +154,7 @@ const McpServer = () => {
                               }
                             />
 
+                            {/* Delete 按钮 */}
                             <PopoverConfirm
                               Trigger={
                                 <Box>
@@ -162,6 +176,7 @@ const McpServer = () => {
                   })}
                 </Tbody>
               </Table>
+              {/* 没有数据时,展示空 */}
               {mcpServerList.length === 0 && <EmptyTip />}
             </TableContainer>
           </MyBox>
@@ -169,6 +184,7 @@ const McpServer = () => {
       </DashboardContainer>
 
       {!!usageWay && <UsageWay mcp={usageWay} onClose={() => setUsageWay(undefined)} />}
+      {/* Edit 按钮触发的 Modal */}
       {!!editMcp && (
         <EditMcpModal
           editMcp={editMcp}

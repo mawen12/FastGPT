@@ -130,7 +130,9 @@ const ChatTest = ({ appForm, setAppForm, setRenderEdit, form2WorkflowFn }: Props
   return (
     <Flex h={'full'} gap={2}>
       <MyBox
+        // 弹性布局，占用去除左侧的剩余空间
         flex={'1 0 0'}
+        // 宽度为0,动态展示
         w={0}
         display={'flex'}
         position={'relative'}
@@ -140,6 +142,7 @@ const ChatTest = ({ appForm, setAppForm, setRenderEdit, form2WorkflowFn }: Props
         {...cardStyles}
         boxShadow={'3'}
       >
+        {/* 第一行 */}
         <Flex px={[2, 5]} pb={2}>
           <FillRowTabs<'helper' | 'chat_debug'>
             py={1}
@@ -164,7 +167,10 @@ const ChatTest = ({ appForm, setAppForm, setRenderEdit, form2WorkflowFn }: Props
           )}
 
           <Box flex={1} />
+
+          {/* 沙盒进入图标 */}
           <SandboxEntryIcon size={'smSquare'} mr={2} onOpen={onOpenSandboxModal} />
+          {/* 重启按钮 */}
           <MyTooltip label={t('common:core.chat.Restart')}>
             <IconButton
               className="chat"
@@ -180,6 +186,7 @@ const ChatTest = ({ appForm, setAppForm, setRenderEdit, form2WorkflowFn }: Props
             />
           </MyTooltip>
         </Flex>
+
         <Box flex={1}>
           {activeTab === 'helper' && (
             <HelperBot
@@ -241,6 +248,7 @@ const ChatTest = ({ appForm, setAppForm, setRenderEdit, form2WorkflowFn }: Props
               }}
             />
           )}
+          {/* Chat */}
           {activeTab === 'chat_debug' && <ChatContainer />}
         </Box>
       </MyBox>

@@ -29,6 +29,7 @@ const EditFolderModal = dynamic(
 const CreateSkillModal = dynamic(() => import('@/pageComponents/dashboard/skill/CreateSkillModal'));
 const ImportSkillModal = dynamic(() => import('@/pageComponents/dashboard/skill/ImportSkillModal'));
 
+// Skill 页面
 const SkillPageContent = ({ MenuIcon }: { MenuIcon: JSX.Element }) => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -87,11 +88,14 @@ const SkillPageContent = ({ MenuIcon }: { MenuIcon: JSX.Element }) => {
                 />
               </Box>
             ) : (
+              // Skill 名称
               <Box color={'myGray.900'} fontSize={'20px'} fontWeight={'medium'}>
                 {t('common:navbar.Skill')}
               </Box>
             )}
+            {/* 中间空白 */}
             <Flex flex={1} />
+            {/* 右侧输入框按钮 */}
             <Flex alignItems={'center'} gap={3}>
               {isPc && (
                 <SearchInput
@@ -104,8 +108,10 @@ const SkillPageContent = ({ MenuIcon }: { MenuIcon: JSX.Element }) => {
                 />
               )}
 
+              {/* 当存在 Create 权限 */}
               {hasCreatePer && (
                 <>
+                  {/* Folder 按钮 */}
                   <Button
                     variant={'grayBase'}
                     leftIcon={<MyIcon name={'common/addLight'} w={'18px'} mr={-1} />}
@@ -114,6 +120,7 @@ const SkillPageContent = ({ MenuIcon }: { MenuIcon: JSX.Element }) => {
                   >
                     {t('common:Folder')}
                   </Button>
+                  {/* Import 按钮 */}
                   <Button
                     variant={'grayBase'}
                     leftIcon={<MyIcon name={'common/importLight'} w={'14px'} />}
@@ -160,6 +167,7 @@ const SkillPageContent = ({ MenuIcon }: { MenuIcon: JSX.Element }) => {
         </Flex>
       </Flex>
 
+      {/* Edit 按钮触发的 Modal */}
       {!!editFolder && (
         <EditFolderModal
           {...editFolder}
@@ -169,10 +177,12 @@ const SkillPageContent = ({ MenuIcon }: { MenuIcon: JSX.Element }) => {
         />
       )}
 
+      {/* 创建 Skill 展示的 Modal */}
       {showCreateModal && (
         <CreateSkillModal parentId={parentId} onClose={() => setShowCreateModal(false)} />
       )}
 
+      {/* Import 展示的 Modal */}
       {showImportModal && (
         <ImportSkillModal
           parentId={parentId}

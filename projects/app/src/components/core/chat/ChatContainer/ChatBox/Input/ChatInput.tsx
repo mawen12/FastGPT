@@ -423,10 +423,12 @@ const ChatInput = ({
   return (
     <Box
       onDragOver={(e) => e.preventDefault()}
+      // 拖动文件处理
       onDrop={(e) => {
         e.preventDefault();
 
         if (!canUploadFile) return;
+
         const files = Array.from(e.dataTransfer.files);
 
         const droppedFiles = files.filter((file) => fileTypeFilter(file));
@@ -434,6 +436,7 @@ const ChatInput = ({
           onSelectFile({ files: droppedFiles });
         }
 
+        // 文件名称检查
         const invalidFileName = files
           .filter((file) => !fileTypeFilter(file))
           .map((file) => file.name)

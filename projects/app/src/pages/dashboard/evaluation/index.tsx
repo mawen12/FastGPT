@@ -32,6 +32,7 @@ import type { evaluationType } from '@fastgpt/global/core/app/evaluation/type';
 import MyTooltip from '@fastgpt/web/components/common/MyTooltip';
 import PopoverConfirm from '@fastgpt/web/components/common/MyPopover/PopoverConfirm';
 
+// 位于底部的 App Evaluation(Beta)
 const Evaluation = () => {
   const router = useRouter();
   const { t } = useTranslation();
@@ -84,10 +85,12 @@ const Evaluation = () => {
   const renderHeader = (MenuIcon?: React.ReactNode) => {
     return isPc ? (
       <Flex justifyContent={'space-between'} alignItems={'center'} mb={4}>
+        {/* 标题名称 */}
         <Box fontSize={'20px'} fontWeight={'medium'} ml={2} color="black">
           {t('dashboard_evaluation:evaluation')}
         </Box>
         <Flex gap={2}>
+          {/* Find tasks 输入框 */}
           <SearchInput
             h={9}
             maxW={230}
@@ -97,8 +100,10 @@ const Evaluation = () => {
               setSearchKey(e.target.value);
             }}
           />
+          {/* Create a task 按钮 */}
           <Button
             onClick={() => {
+              // 点击跳转到 /dashboard/evaluation/create 页面
               router.push('/dashboard/evaluation/create');
             }}
             h={9}
@@ -185,12 +190,15 @@ const Evaluation = () => {
       <DashboardContainer>
         {({ MenuIcon }) => (
           <Flex h={'full'} bg={'white'} p={6} flexDirection="column">
+            {/* 顶部一行 */}
             {renderHeader(MenuIcon)}
 
+            {/* 底部表格 */}
             <TableContainer mt={3} fontSize={'sm'} flex={'1 0 0'} overflowY="auto">
               <Table variant={'simple'}>
                 <Thead>
                   <Tr color={'myGray.600'}>
+                    {/* 表头 */}
                     <Th fontWeight={'400'}>{t('dashboard_evaluation:Task_name')}</Th>
                     <Th fontWeight={'400'}>{t('dashboard_evaluation:Progress')}</Th>
                     <Th fontWeight={'400'}>{t('dashboard_evaluation:Executor')}</Th>
@@ -201,6 +209,7 @@ const Evaluation = () => {
                   </Tr>
                 </Thead>
                 <Tbody>
+                  {/* 表记录 */}
                   <Tr h={'5px'} />
                   {evaluationList.map((item) => {
                     return (
@@ -266,6 +275,7 @@ const Evaluation = () => {
                 </Tbody>
               </Table>
             </TableContainer>
+            {/* 分页信息 */}
             {total >= pageSize && (
               <Flex mt={4} justifyContent="center">
                 <Pagination />
@@ -274,6 +284,7 @@ const Evaluation = () => {
           </Flex>
         )}
       </DashboardContainer>
+      {/* 详情 modal */}
       {!!evalDetail && (
         <EvaluationDetailModal
           evalDetail={evalDetail}

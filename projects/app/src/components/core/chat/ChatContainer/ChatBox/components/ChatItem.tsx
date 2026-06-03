@@ -343,6 +343,7 @@ const ChatItem = (props: Props) => {
   return (
     <Box
       data-chat-id={chat.dataId}
+      // 悬浮时，应用 .time-label 样式，即展示消息时间
       _hover={{
         '& .time-label': {
           display: 'block'
@@ -354,6 +355,7 @@ const ChatItem = (props: Props) => {
         {isChatting && chat.obj === ChatRoleEnum.AI && isLastChild ? null : (
           <Flex order={styleMap.order} ml={styleMap.ml} align={'center'} gap={'0.62rem'}>
             {chat.time && (isPc || isChatLog) && (
+              // 聊天时间
               <Box
                 order={chat.obj === ChatRoleEnum.AI ? 2 : 0}
                 className={'time-label'}
@@ -367,6 +369,8 @@ const ChatItem = (props: Props) => {
                 }).replace('#', ':')}
               </Box>
             )}
+
+            {/* 控制按钮：Copy + Mark */}
             <ChatController
               {...props}
               isLastChild={isLastChild}
@@ -375,6 +379,8 @@ const ChatItem = (props: Props) => {
             />
           </Flex>
         )}
+
+        {/* 展示对应头像 */}
         {showAvatar !== false && <ChatAvatar src={avatar} type={chat.obj} />}
 
         {/* Workflow status */}

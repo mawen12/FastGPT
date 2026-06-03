@@ -38,6 +38,7 @@ const Edit = ({
       position={'relative'}
     >
       {/* Top agent editor */}
+      {/* 左侧部分 */}
       {renderEdit && (
         <Box
           className={styles.EditAppBox}
@@ -47,6 +48,7 @@ const Edit = ({
           flex={'1'}
         >
           <Box {...cardStyles} boxShadow={'2'}>
+            {/* 应用介绍卡片 */}
             <AppCard
               appForm={appForm}
               setPast={setPast}
@@ -55,15 +57,19 @@ const Edit = ({
             />
           </Box>
 
+          {/* 提示信息 */}
           <Box mt={4} p={4} {...cardStyles} boxShadow={'2'} whiteSpace={'pre-wrap'} fontSize={'sm'}>
             {t('app:chat_agent_beta_tip')}
           </Box>
 
+          {/* 编辑表单 */}
           <Box pb={4}>
             <EditForm appForm={appForm} setAppForm={setAppForm} />
           </Box>
         </Box>
       )}
+
+      {/* 右侧的 Chat Preview */}
       {isPc && (
         <Box flex={'2 0 0'} w={0} mb={3}>
           <ChatTest

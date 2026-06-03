@@ -69,7 +69,11 @@ export type CreateAppType =
   | AppTypeEnum.mcpToolSet
   | AppTypeEnum.httpToolSet;
 
-// 创建 Agent/Workflow/ 的页面
+/**
+ * 创建 Agent/Workflow/ 的页面
+ *
+ * 接口
+ */
 const CreateAppsPage = () => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -83,6 +87,7 @@ const CreateAppsPage = () => {
   const [creatingTemplateId, setCreatingTemplateId] = useState<string | null>(null);
   const isToolType = ToolTypeList.includes(selectedAppType);
 
+  // 根据选择的app类型,来读取对应的模板列表
   const { data: templateData, loading: isLoadingTemplates } = useRequest(
     () => getTemplateMarketItemList({ isQuickTemplate: true, type: selectedAppType }),
     {
@@ -124,6 +129,7 @@ const CreateAppsPage = () => {
     }
   );
 
+  // 调用 /core/app/create 来创建应用
   const { runAsync: onClickCreate, loading: isCreating } = useRequest(
     async (
       { avatar, name, createType, mcpUrl, mcpHeaderSecret, mcpToolList }: FormType,
@@ -236,14 +242,14 @@ const CreateAppsPage = () => {
             }
           }}
         >
-          {/* 左侧选择的 */}
+          {/* 第一部分: agent type 选择 */}
           <Box mb={5} borderBottom={'1px solid'} borderColor={'myGray.200'}>
             {/* agent type */}
             <Box color={'myGray.900'} fontWeight={'medium'} mb={2.5}>
               {(isToolType ? t('app:type.Tool') : 'Agent ') + t('common:support.standard.type')}
             </Box>
 
-            {/* 三种 agent 类型 */}
+            {/* 三种 agent 类型: chatAgent/workflow */}
             <SimpleGrid columns={3} gap={2.5} pb={5}>
               {Object.values(createAppTypeMap)
                 .filter((option) =>
@@ -268,7 +274,7 @@ const CreateAppsPage = () => {
             </SimpleGrid>
           </Box>
 
-          {/* 下半部分 */}
+          {/* 第二部分:通用的 icon + input + button */}
           <Box mb={5}>
             {/* icon  */}
             <Box color={'myGray.900'} fontWeight={'medium'} mb={2.5} letterSpacing={'0.15px'}>
@@ -317,9 +323,10 @@ const CreateAppsPage = () => {
             </Flex>
           </Box>
 
-          {/* 模版部分 */}
+          {/* 第三部分:模板数据选择 */}
           {templateData?.list && templateData.list.length > 0 && (
             <Box>
+              {/* 模板:第一部分:模板操作 */}
               <Flex justifyContent={'space-between'} mb={2.5}>
                 {/* 文本：创建模版 */}
                 <Box color={'myGray.900'} fontWeight={'medium'}>
@@ -343,7 +350,7 @@ const CreateAppsPage = () => {
                 </Flex>
               </Flex>
 
-              {/* 模版列表 */}
+              {/* 模板:第二部分:模板列表 */}
               <Fade in={!isLoadingTemplates && templateData?.list && templateData.list.length > 0}>
                 <SimpleGrid columns={[1, 3]} gridGap={2.5}>
                   {templateData.list.map((item) => (
@@ -374,6 +381,7 @@ const CreateAppsPage = () => {
                         overflow={'hidden'}
                         mb={2}
                       >
+                        {/* 模板头像背景层,用于营造氛围 */}
                         <Avatar
                           src={item.avatar}
                           position={'absolute'}
@@ -384,6 +392,7 @@ const CreateAppsPage = () => {
                           filter={'blur(20px)'}
                           zIndex={0}
                         />
+                        {/* 模板的纯白背景 */}
                         <Box
                           position={'absolute'}
                           top={0}
@@ -396,7 +405,7 @@ const CreateAppsPage = () => {
                           }
                           zIndex={1}
                         />
-
+                        {/* 模板头像 */}
                         <Box
                           position={'absolute'}
                           top={'50%'}
@@ -408,7 +417,9 @@ const CreateAppsPage = () => {
                         </Box>
                       </Box>
 
+                      {/* 模板名称 */}
                       <Box color={'myGray.900'}>{t(item.name as any)}</Box>
+                      {/* 模板介绍 */}
                       <Box fontSize={'mini'} color={'myGray.500'} flex={1} noOfLines={2} mt={1}>
                         {t(item.intro as any)}
                       </Box>

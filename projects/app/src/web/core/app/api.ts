@@ -23,8 +23,12 @@ import type {
   ResumeInheritPermissionResponseType
 } from '@fastgpt/global/openapi/core/app/permission/api';
 
+// app 的 crud
+
 /**
  * 获取应用列表
+ *
+ * POST /core/app/list
  */
 export const getMyApps = (data?: ListAppBodyType) =>
   POST<ListAppResponseType>('/core/app/list', data, {
@@ -33,30 +37,44 @@ export const getMyApps = (data?: ListAppBodyType) =>
 
 /**
  * 创建一个应用
+ *
+ * POST /core/app/create
  */
 export const postCreateApp = (data: CreateAppBodyType) =>
   POST<CreateAppResponseType>('/core/app/create', data);
 
 export const getMyAppsByTags = (data: Record<string, unknown>) =>
   POST(`/proApi/core/chat/team/getApps`, data);
+
 /**
  * 根据 ID 删除应用
+ *
+ * DELETE /core/app/del?appId=?
  */
 export const delAppById = (id: DeleteAppQueryType['appId']) =>
   DELETE<DeleteAppResponseType>(`/core/app/del?appId=${id}`);
 
 /**
  * 根据 ID 获取应用
+ *
+ * GET /core/app/detail?appId=?
  */
 export const getAppDetailById = (id: GetAppDetailQueryType['appId']) =>
   GET<GetAppDetailResponseType>(`/core/app/detail?appId=${id}`);
 
 /**
  * 根据 ID 更新应用
+ *
+ * PUT /core/app/update?appId=?
  */
 export const putAppById = (id: UpdateAppQueryType['appId'], data: UpdateAppBodyType) =>
   PUT<UpdateAppResponseType>(`/core/app/update?appId=${id}`, data);
 
+/**
+ * 获取应用的权限
+ *
+ * GET /core/app/getPermission?appId=?
+ */
 export const getAppPermission = (appId: GetAppPermissionQueryType['appId']) =>
   GET<AppPermissionCheckType>(`/core/app/getPermission?appId=${appId}`);
 

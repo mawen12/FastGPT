@@ -91,6 +91,7 @@ const ChatRecordsList = ({
 
   return (
     <Box id={'history'}>
+      {/* 迭代展示聊天记录 */}
       {records.map((item, index) => {
         const shouldRender = !item.deleteTime || expandedDeletedGroups.has(item.dataId);
 
@@ -111,32 +112,49 @@ const ChatRecordsList = ({
                   itemRefs.current.set(item.dataId, e);
                 }}
               >
+                {/* 时间线划分，对于跨度较长的记录，展示时间线 */}
                 {shouldShowTimeDivider({ records, item, index }) && <TimeBox time={item.time!} />}
 
                 <Box py={item.hideInUI ? 0 : 6}>
+                  {/* Human 发送的内容 */}
                   {item.obj === ChatRoleEnum.Human && !item.hideInUI && (
                     <ChatItem
+                      // 使用用户自己的头像
                       avatar={userAvatar}
+                      // 聊天内容
                       chat={item}
+                      // 重试操作
                       onRetry={onRetry(item.dataId)}
+                      // 删除操作
                       onDelete={onDelete(item.dataId)}
+                      // 是否为最后一条记录
                       isLastChild={index === records.length - 1}
                     />
                   )}
+                  {/* AI 返回的内容 */}
                   {item.obj === ChatRoleEnum.AI && (
                     <ChatItem
+                      // ai 采用当前应用的头像
                       avatar={appAvatar}
+                      // 聊天记录
                       chat={item}
+                      // 是否为最后一条记录
                       isLastChild={index === records.length - 1}
                       {...{
+                        // 是否展示语音图标
                         showVoiceIcon,
+                        // 状态数据
                         statusBoxData,
+                        // 问题指南
                         questionGuides,
+                        // 标记操作
                         onMark: onMark(
                           item,
                           formatChatValue2InputType(records[index - 1]?.value)?.text
                         ),
+                        // Like 操作
                         onAddUserLike: onAddUserLike(item),
+                        // Dislike 操作
                         onAddUserDislike: onAddUserDislike(item),
                         onToggleFeedbackReadStatus: onToggleFeedbackReadStatus(item)
                       }}

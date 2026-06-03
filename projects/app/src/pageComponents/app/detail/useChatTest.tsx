@@ -175,6 +175,7 @@ export const useChatTest = ({
         />
       </Box>
     ) : (
+      // Chat
       <ChatBox
         isReady={isReady}
         appId={appId}

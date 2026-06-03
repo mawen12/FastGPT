@@ -46,6 +46,7 @@ const loadingReducer = (state: Set<string>, action: LoadingAction): Set<string> 
   return state;
 };
 
+// system tools 页面
 const ToolKitProvider = ({ MenuIcon }: { MenuIcon: JSX.Element }) => {
   const router = useRouter();
   const { t, i18n } = useTranslation();
@@ -159,6 +160,7 @@ const ToolKitProvider = ({ MenuIcon }: { MenuIcon: JSX.Element }) => {
         <Box px={8} flexShrink={0}>
           {isPc && (
             <Flex alignItems={'center'}>
+              {/* System Tools 标题 */}
               <Box
                 mt={8}
                 mb={4}
@@ -169,6 +171,8 @@ const ToolKitProvider = ({ MenuIcon }: { MenuIcon: JSX.Element }) => {
               >
                 {t('app:core.module.template.System Tools')}
               </Box>
+
+              {/* Contribute Resource 按钮 */}
               {feConfigs?.docUrl && (
                 <Button
                   mr={4}
@@ -210,7 +214,9 @@ const ToolKitProvider = ({ MenuIcon }: { MenuIcon: JSX.Element }) => {
                   mr={4}
                 >
                   {isSearchExpanded ? (
+                    // Search 输入框
                     <InputGroup>
+                      {/* 搜索按钮 */}
                       <MyIcon
                         position={'absolute'}
                         zIndex={10}
@@ -221,6 +227,7 @@ const ToolKitProvider = ({ MenuIcon }: { MenuIcon: JSX.Element }) => {
                         top={'50%'}
                         transform={'translateY(-50%)'}
                       />
+                      {/* 文本输入框 */}
                       <Input
                         px={8}
                         h={'35px'}
@@ -235,6 +242,7 @@ const ToolKitProvider = ({ MenuIcon }: { MenuIcon: JSX.Element }) => {
                           }
                         }}
                       />
+                      {/* 清除按钮 */}
                       {searchText && (
                         <MyIcon
                           position={'absolute'}
@@ -274,6 +282,7 @@ const ToolKitProvider = ({ MenuIcon }: { MenuIcon: JSX.Element }) => {
                   )}
                 </Flex>
               )}
+              {/* 可选标签 */}
               <Box flex={'1'} overflow={'auto'} mb={-1}>
                 <ToolTagFilterBox
                   tags={tags}

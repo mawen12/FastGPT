@@ -202,7 +202,9 @@ const Header = ({
         </Flex>
       )}
       <Flex w={'full'} alignItems={'center'} position={'relative'} h={'full'}>
+        {/* 第一行 */}
         <Box flex={'1'}>
+          {/* 路径，根目录展示 all */}
           <FolderPath
             rootName={t('common:All')}
             paths={paths}
@@ -212,14 +214,17 @@ const Header = ({
           />
         </Box>
         {isPc && (
+          // Workflow / Publish / Logs 三个 Tab
           <Box position={'absolute'} left={'50%'} transform={'translateX(-50%)'}>
             <RouteTab />
           </Box>
         )}
+        {/* 最右侧 */}
         {currentTab === TabEnum.appEdit && (
           <Flex alignItems={'center'}>
             {!isShowHistories && (
               <>
+                {/* 已编辑未保存的 Tag */}
                 {isPc && (
                   <MyTag
                     mr={3}
@@ -239,6 +244,7 @@ const Header = ({
                   </MyTag>
                 )}
 
+                {/* 历史记录 按钮 */}
                 <IconButton
                   mr={[2, 4]}
                   icon={<MyIcon name={'history'} w={'18px'} />}
@@ -249,6 +255,7 @@ const Header = ({
                   variant={'whitePrimary'}
                   onClick={setIsShowHistories}
                 />
+                {/* 保存 按钮 */}
                 <SaveButton
                   colorSchema="primary"
                   isLoading={loading}
@@ -307,6 +314,7 @@ const Header = ({
         )}
       </Flex>
 
+      {/* 历史记录 Tag */}
       {isShowHistories && currentTab === TabEnum.appEdit && (
         <PublishHistories<SimpleAppSnapshotType>
           onClose={closeHistories}

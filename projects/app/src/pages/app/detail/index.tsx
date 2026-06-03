@@ -54,6 +54,7 @@ const AppDetail = () => {
         ) : (
           <>
             {appDetail.type === AppTypeEnum.simple && <SimpleEdit key={appDetail._id} />}
+            {/* Chat Agent */}
             {appDetail.type === AppTypeEnum.chatAgent && <AgentEdit key={appDetail._id} />}
             {appDetail.type === AppTypeEnum.workflow && <Workflow key={appDetail._id} />}
             {appDetail.type === AppTypeEnum.workflowTool && <Plugin key={appDetail._id} />}
