@@ -73,6 +73,7 @@ const ChatHeader = ({
     >
       {isPc ? (
         <>
+          {/* 标题 + 记录数 */}
           <PcHeader
             totalRecordsCount={totalRecordsCount}
             title={chatData.title || t('common:core.chat.New Chat')}
@@ -102,6 +103,7 @@ const ChatHeader = ({
         {!isVariableVisible && <VariablePopover chatType={chatType} />}
 
         {/* control */}
+        {/* 控制按钮 */}
         {!isPlugin && !hideMenu && <ToolMenu history={history} reserveSpace={reserveSpace} />}
       </Flex>
     </Flex>

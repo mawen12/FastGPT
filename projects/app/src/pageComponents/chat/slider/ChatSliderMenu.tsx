@@ -15,8 +15,11 @@ const ChatSliderMenu = ({ menuConfirmButtonText }: Props) => {
   const { t } = useTranslation();
   const { isPc } = useSystem();
 
+  // 历史记录
   const histories = useContextSelector(ChatContext, (v) => v.histories);
+  // 清除聊天历史
   const onClearHistory = useContextSelector(ChatContext, (v) => v.onClearHistories);
+  // 创建新的chat
   const onChangeChatId = useContextSelector(ChatContext, (v) => v.onChangeChatId);
 
   const setCiteModalData = useContextSelector(ChatItemContext, (v) => v.setCiteModalData);
@@ -39,6 +42,7 @@ const ChatSliderMenu = ({ menuConfirmButtonText }: Props) => {
         </Flex>
       )}
 
+      {/* 此处展示 New 按钮，用于创建新的 Chat */}
       <Button
         variant={'whitePrimary'}
         flex={['0 0 auto', 1]}
@@ -56,6 +60,7 @@ const ChatSliderMenu = ({ menuConfirmButtonText }: Props) => {
         {t('common:core.chat.New Chat')}
       </Button>
 
+      {/* 如果存在历史记录，则提供 Clear 按钮 */}
       {isPc && histories.length > 0 && (
         <PopoverConfirm
           Trigger={

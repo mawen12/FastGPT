@@ -9,6 +9,9 @@ type Props = BoxProps & {
   loadingVariant?: LoadingVariant;
 };
 
+/**
+ * 支持 Loading 的 Box，当处于 Loading 状态时，子级内容正常渲染，但是会额外渲染一个 Loading，用于覆盖当前 Box 的子区域
+ */
 const MyBox = ({ text, isLoading, children, size, loadingVariant, ...props }: Props, ref: any) => {
   return (
     <Box ref={ref} position={isLoading ? 'relative' : 'unset'} {...props}>

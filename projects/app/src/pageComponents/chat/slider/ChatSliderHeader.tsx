@@ -16,6 +16,7 @@ import { DEFAULT_LOGO_BANNER_URL } from '@/pageComponents/chat/constants';
 
 type Props = {
   title?: string;
+  // 非 PC 端展示 Banner
   banner?: string;
 };
 
@@ -38,9 +39,12 @@ const ChatSliderHeader = ({ title, banner }: Props) => {
   const isFavouriteAppPane = pane === ChatSidebarPaneEnum.FAVORITE_APPS;
 
   return isPc ? (
+    // 横向排列 Avatar + appName 或是 title
     <Flex pt={5} px={[2, 5]} alignItems={'center'} fontSize={'sm'} pb={title ? 0 : 2}>
+      {/* 无 title 时，展示头像 */}
       {!title && <Avatar src={appAvatar} borderRadius={'md'} />}
 
+      {/*  */}
       <Box
         flex={'1 0 0'}
         w={0}

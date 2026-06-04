@@ -4,7 +4,7 @@ import type { BoxProps } from '@chakra-ui/react';
 import MyIcon from '@fastgpt/web/components/common/Icon';
 
 interface Props extends BoxProps {
-  externalTrigger?: Boolean;
+  externalTrigger?: boolean;
 }
 
 const SideBar = (e?: Props) => {
@@ -15,10 +15,11 @@ const SideBar = (e?: Props) => {
     ...props
   } = e || {};
 
+  // 是否处于收缩状态
   const [isFolded, setIsFolded] = useState(false);
 
   // 保存上一次折叠状态
-  const preFoledStatus = useRef<Boolean>(false);
+  const preFoledStatus = useRef<boolean>(false);
 
   useEffect(() => {
     if (externalTrigger) {
@@ -32,6 +33,7 @@ const SideBar = (e?: Props) => {
   }, [externalTrigger]);
 
   return (
+    // 边框
     <Box
       position={'relative'}
       flex={isFolded ? '0 0 0' : w}
@@ -44,6 +46,7 @@ const SideBar = (e?: Props) => {
       }}
       {...props}
     >
+      {/*  */}
       <Flex
         position={'absolute'}
         right={0}
@@ -68,6 +71,7 @@ const SideBar = (e?: Props) => {
             })}
         onClick={() => setIsFolded(!isFolded)}
       >
+        {/* app 图标 */}
         <MyIcon
           name={'common/backLight'}
           transform={isFolded ? 'rotate(180deg)' : ''}
@@ -75,6 +79,7 @@ const SideBar = (e?: Props) => {
           color={'white'}
         />
       </Flex>
+      {/* 如果未展开，则隐藏，否则展示出来 */}
       <Box position={'relative'} h={'100%'} overflow={isFolded ? 'hidden' : 'visible'}>
         {children}
       </Box>

@@ -61,6 +61,9 @@ const defaultWhisperConfig: AppWhisperConfigType = {
   autoTTSResponse: false
 };
 
+/**
+ * 不包含外层部分的聊天
+ */
 const HomeChatWindow = () => {
   const { t } = useTranslation();
   const { isPc } = useSystem();
@@ -410,13 +413,17 @@ const HomeChatWindow = () => {
   );
 
   return (
+    // 高度100%，flex 布局：移动端 column(上下布局)，PC 端 row（左右布局）
     <Flex h={'100%'} flexDirection={['column', 'row']}>
       {/* set window title and icon */}
+      {/* title 和 图标 */}
       <NextHead title={chatSettings?.homeTabTitle} icon={getWebReqUrl(feConfigs?.favicon)} />
 
       {/* show history slider */}
       {isPc ? (
+        // 左侧的 sidebar
         <SideBar externalTrigger={Boolean(datasetCiteData)}>
+          {/* 历史记录边框 */}
           <ChatHistorySidebar
             title={appId === homeAppId ? t('chat:history_slider.home.title') : undefined}
             menuConfirmButtonText={t('common:core.chat.Confirm to clear history')}
