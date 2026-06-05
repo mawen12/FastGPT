@@ -219,7 +219,8 @@
 # 修改 .env.local
 FILE_TOKEN_KEY=dwadwadwadawdwadwa
 PLUGIN_ACCESS_TOKEN_EXPIRES_IN=3600
-PG_URL=postgresql://blog:secret_password@localhost:5432/blog
+# 如果使用默认的，则无需修改
+PG_URL=postgresql://username:password@localhost:5432/blog
 
 > cd FastGPT
 > pnpm i

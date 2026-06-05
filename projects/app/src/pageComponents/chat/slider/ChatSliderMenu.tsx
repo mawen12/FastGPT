@@ -33,6 +33,7 @@ const ChatSliderMenu = ({ menuConfirmButtonText }: Props) => {
       justify={['space-between', '']}
       alignItems={'center'}
     >
+      {/* 非PC */}
       {!isPc && (
         <Flex height={'100%'} align={'center'} justify={'center'}>
           <MyIcon ml={2} name="core/chat/sideLine" />

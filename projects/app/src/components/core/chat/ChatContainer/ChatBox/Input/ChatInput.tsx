@@ -159,6 +159,7 @@ const ChatInput = ({
         {/* Textarea */}
         <Flex w={'100%'}>
           {/* Prompt Container */}
+          {/* 第一部分：textarea */}
           <Textarea
             ref={TextareaDom}
             py={0}
@@ -278,6 +279,7 @@ const ChatInput = ({
     ]
   );
 
+  // 底部的按钮组
   const RenderButtonGroup = useMemo(() => {
     const iconSize = {
       w: isPc ? '20px' : '16px',
@@ -381,6 +383,7 @@ const ChatInput = ({
                 return void handleSend(inputValue);
               }}
             >
+              {/* 如果是正在聊天中，则展示 Stop 按钮，否则展示 Send 按钮 */}
               {isChatting ? (
                 <MyIcon {...iconSize} name={'stop'} color={'primary.600'} />
               ) : (
@@ -423,14 +426,17 @@ const ChatInput = ({
   return (
     <Box
       onDragOver={(e) => e.preventDefault()}
-      // 拖动文件处理
+      // 处理拖动的文件
       onDrop={(e) => {
         e.preventDefault();
 
+        // 当禁止上传文件时退出
         if (!canUploadFile) return;
 
+        // 读取拖拽的文件
         const files = Array.from(e.dataTransfer.files);
 
+        // 仅展示支持的文件类型
         const droppedFiles = files.filter((file) => fileTypeFilter(file));
         if (droppedFiles.length > 0) {
           onSelectFile({ files: droppedFiles });
@@ -484,6 +490,7 @@ const ChatInput = ({
             />
           )}
           {/* file preview */}
+          {/* 上传文件预览区域 */}
           {(!mobilePreSpeak || isPc || inputValue) && (
             <Box px={[2, 3]}>
               <FilePreview fileList={fileList} removeFiles={removeFiles} />
@@ -491,6 +498,7 @@ const ChatInput = ({
           )}
 
           {/* voice input and loading container */}
+          {/* 语音输入区域 */}
           {!inputValue && (
             <VoiceInput
               ref={VoiceInputRef}
@@ -514,9 +522,11 @@ const ChatInput = ({
             />
           )}
 
+          {/* 文本框 */}
           {RenderTextarea}
         </Box>
 
+        {/* 展示按钮组 */}
         {!mobilePreSpeak && <Box>{RenderButtonGroup}</Box>}
       </Flex>
       <ComplianceTip type={'chat'} />

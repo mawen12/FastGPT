@@ -5,9 +5,11 @@
 ## AppChatWindow
 
 不带有侧边的聊天组件。
-- SideBar
+- SideBar 
+- ChatHistorySidebar
 - ChatHeader
 - ChatBox
+- ChatInput
 
 ## ChatItem
 

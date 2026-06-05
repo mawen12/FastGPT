@@ -100,6 +100,7 @@ const ChatBox = ({
   onStopChat,
   onMarkChatRead
 }: Props) => {
+  // i18n
   const { t } = useTranslation();
   const TextareaDom = useRef<HTMLTextAreaElement>(null);
   const chatController = useRef(new AbortController());

@@ -46,7 +46,7 @@ const SideBar = (e?: Props) => {
       }}
       {...props}
     >
-      {/*  */}
+      {/* 操作收起和展示的按钮，位于左侧中间位置 */}
       <Flex
         position={'absolute'}
         right={0}
@@ -79,7 +79,7 @@ const SideBar = (e?: Props) => {
           color={'white'}
         />
       </Flex>
-      {/* 如果未展开，则隐藏，否则展示出来 */}
+      {/* Sidebar 中的内容，如果未展开，则隐藏，否则展示出来 */}
       <Box position={'relative'} h={'100%'} overflow={isFolded ? 'hidden' : 'visible'}>
         {children}
       </Box>

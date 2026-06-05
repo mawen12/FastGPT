@@ -191,7 +191,9 @@ const ChatItem = (props: Props) => {
         ? {
             order: 0,
             borderRadius: '8px 0 8px 8px',
+            // 人类的对话展示在右侧
             justifyContent: 'flex-end',
+            // 文本靠右展示
             textAlign: 'right',
             bg: 'primary.100'
           }
@@ -349,6 +351,8 @@ const ChatItem = (props: Props) => {
           display: 'block'
         }
       }}
+      border={'3px'}
+      borderColor={'black'}
     >
       {/* control icon */}
       <Flex w={'100%'} alignItems={'center'} gap={2} justifyContent={styleMap.justifyContent}>

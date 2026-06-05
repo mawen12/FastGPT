@@ -89,6 +89,7 @@ const ChatContextProvider = ({
 
   const { isOpen: isOpenSlider, onClose: onCloseSlider, onOpen: onOpenSlider } = useDisclosure();
 
+  // 滚动数据时，数据会分页加载
   const {
     ScrollData,
     isLoading: isPaginationLoading,
@@ -102,6 +103,7 @@ const ChatContextProvider = ({
     showErrorToast: false
   });
 
+  // 点击不同的 chat 或创建新的 chat
   const onChangeChatId = useCallback(
     (changeChatId = getNanoid(24), forbid = false) => {
       setHistories((state) =>
@@ -125,6 +127,7 @@ const ChatContextProvider = ({
     [chatId, onCloseSlider, setChatId, setHistories]
   );
 
+  // 切换 app
   const onChangeAppId = useCallback(
     (appId: string) => {
       router.replace({
@@ -138,6 +141,7 @@ const ChatContextProvider = ({
     [onCloseSlider, router]
   );
 
+  // 发起请求
   const { runAsync: onUpdateHistory } = useRequest(
     (data: UpdateHistoryParams) =>
       putChatHistory({
@@ -171,6 +175,7 @@ const ChatContextProvider = ({
     }
   );
 
+  // 清理单条 history
   const { runAsync: onDelHistory, loading: isDeletingHistory } = useRequest(
     (chatId: string) =>
       delChatHistoryById({
@@ -187,6 +192,7 @@ const ChatContextProvider = ({
     }
   );
 
+  // 清理所有 history
   const { runAsync: onClearHistories, loading: isClearingHistory } = useRequest(
     () =>
       delClearChatHistories({
@@ -204,6 +210,7 @@ const ChatContextProvider = ({
     }
   );
 
+  // 更新 title
   const onUpdateHistoryTitle = useCallback(
     ({ chatId, newTitle }: { chatId: string; newTitle: string }) => {
       const { appId: currentAppId, chatId: currentChatId } = useChatStore.getState();
@@ -223,11 +230,15 @@ const ChatContextProvider = ({
     [historyAppId, loadHistories, setHistories]
   );
 
+  // 提取所有 histories 的 chatId
   const historyChatIdsKey = useMemo(() => histories.map((h) => h.chatId).join(','), [histories]);
+  // 指向历史记录
   const historiesRef = useRef(histories);
   const prevHistoryAppIdRef = useRef<string | null>(null);
+  // 维护发送聊天请求中的历史
   const pendingAppChatRestoreRef = useRef(false);
 
+  // 当历史记录更新时，同步更新
   useEffect(() => {
     historiesRef.current = histories;
   }, [histories]);

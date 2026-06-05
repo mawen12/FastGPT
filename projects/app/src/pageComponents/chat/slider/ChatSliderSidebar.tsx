@@ -7,6 +7,7 @@ import ChatSliderList from '@/pageComponents/chat/slider/ChatSliderList';
 
 type Props = {
   title?: string;
+  // 非 PC 端展示 Banner
   banner?: string;
   menuConfirmButtonText?: string;
   footerSlot?: React.ReactNode;
