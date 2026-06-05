@@ -173,6 +173,7 @@ const AppChatWindow = () => {
         flex={'1 0 0'}
         flexDirection={'column'}
       >
+        {/* 顶部标题 + 记录数 + 末尾操作按钮 */}
         <ChatHeader
           pane={pane}
           chatSettings={chatSettings}
@@ -181,6 +182,7 @@ const AppChatWindow = () => {
           totalRecordsCount={totalRecordsCount}
         />
 
+        {/*  */}
         <Box flex={'1 0 0'} bg={'white'}>
           {isPlugin ? (
             <CustomPluginRunBox
@@ -191,6 +193,7 @@ const AppChatWindow = () => {
               onStartChat={onStartChat}
             />
           ) : (
+            // 聊天盒
             <ChatBox
               appId={appId}
               chatId={chatId}

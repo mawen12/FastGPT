@@ -207,3 +207,43 @@
 > cd projects/mcp-server && bun start
 ```
 
+## 本地开发
+
+```bash
+> cd deploy/dev
+> docker compose up -d
+> cd projects/app
+> cp .env.template .env.local
+> cp data/config.json data/config.local.json
+
+# 修改 .env.local
+FILE_TOKEN_KEY=dwadwadwadawdwadwa
+PLUGIN_ACCESS_TOKEN_EXPIRES_IN=3600
+PG_URL=postgresql://blog:secret_password@localhost:5432/blog
+
+> cd FastGPT
+> pnpm i
+> cd projects/app
+> pnpm dev
+
+# 浏览器访问，用户名：root，密码为 .env.local 中的DEFAULT_ROOT_PSW
+localhost:3000
+root
+123456
+
+
+# 配置 LLM
+DeepSeek -> deepseek-v4-flash
+    Custom url: https://api.deepseek.com/v1/chat/completions
+    Custom key:
+# 配置 Other
+Model Id: embedding-3
+Alias: embedding-3
+Provider: Other
+Number of concurrent request: 1
+Default tokens: 512
+Max Content: 8000
+Custom url: https://open.bigmodel.cn/api/paas/v4/embeddings
+Custom key:
+```
+

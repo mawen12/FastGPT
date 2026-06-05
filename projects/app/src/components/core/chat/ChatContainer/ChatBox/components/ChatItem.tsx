@@ -355,15 +355,17 @@ const ChatItem = (props: Props) => {
         {isChatting && chat.obj === ChatRoleEnum.AI && isLastChild ? null : (
           <Flex order={styleMap.order} ml={styleMap.ml} align={'center'} gap={'0.62rem'}>
             {chat.time && (isPc || isChatLog) && (
-              // 聊天时间
+              // 聊天时间，悬浮时展示
               <Box
                 order={chat.obj === ChatRoleEnum.AI ? 2 : 0}
                 className={'time-label'}
                 fontSize={styleMap.fontSize}
                 color={styleMap.color}
                 fontWeight={styleMap.fontWeight}
+                // 当展示为 chatLog 时，则一直展示，否则就是悬浮时展示
                 display={isChatLog ? 'block' : 'none'}
               >
+                {/* 仅展示 HH:mm */}
                 {t(formatTimeToChatItemTime(chat.time) as any, {
                   time: dayjs(chat.time).format('HH:mm')
                 }).replace('#', ':')}
@@ -463,9 +465,11 @@ const ChatItem = (props: Props) => {
               textAlign={'left'}
               minW={isPlanCard ? ['calc(100% - 25px)', '50%'] : undefined}
             >
+              {/* 人类发出的对话 */}
               {chat.obj === ChatRoleEnum.Human && (
                 <HumanContentCard chatValue={value as UserChatItemValueItemType[]} />
               )}
+              {/* AI 返回的对话 */}
               {chat.obj === ChatRoleEnum.AI && (
                 <>
                   <AIContentCard

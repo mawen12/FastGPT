@@ -23,10 +23,14 @@ const ChatHistorySidebar = ({ title, banner, menuConfirmButtonText, footerSlot }
       h={'100%'}
       bg={'white'}
       borderRight={['', theme.borders.base]}
+      //
       whiteSpace={'nowrap'}
     >
+      {/* 头部 */}
       <ChatSliderHeader title={title} banner={banner} />
+      {/* menu 操作列 */}
       <ChatSliderMenu menuConfirmButtonText={menuConfirmButtonText} />
+      {/* 聊天记录 */}
       <ChatSliderList />
       {footerSlot}
     </MyBox>

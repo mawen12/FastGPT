@@ -30,6 +30,7 @@ const ChatSliderList = () => {
   const chatBoxData = useContextSelector(ChatItemContext, (v) => v.chatBoxData);
 
   const concatHistory = useMemo(() => {
+    // 遍历当前 app 的聊天记录
     const scopedHistories = histories.filter((item) => item.appId === appId);
 
     const formatHistories: {
@@ -41,6 +42,7 @@ const ChatSliderList = () => {
       chatGenerateStatus?: ChatGenerateStatusEnum;
       hasBeenRead?: boolean;
     }[] = scopedHistories.map((item) => {
+      // 检查是否聚焦该聊天
       const isActiveChat = item.chatId === activeChatId && chatBoxData.chatId === item.chatId;
 
       return {
@@ -106,6 +108,7 @@ const ChatSliderList = () => {
       {/* 移动端侧栏只需要纵向滚动；隐藏横向滚动条，避免底部语言入口上方出现灰线。 */}
       {/* eslint-disable-next-line react-hooks/static-components -- ScrollData is supplied by useScrollPagination. */}
       <ScrollData flex={'1 0 0'} h={0} px={[2, 5]} overflowY={'auto'} overflowX={'hidden'}>
+        {/* 迭代聊天历史 */}
         {concatHistory.map((item, i) => (
           <Flex
             position={'relative'}
@@ -145,17 +148,21 @@ const ChatSliderList = () => {
               mb: '8px'
             })}
           >
+            {/* 聊天图标，如果是当前chat，则采用 Fill 的效果 */}
             <MyIcon
               name={item.id === activeChatId ? 'core/chat/chatFill' : 'core/chat/chatLight'}
               w={'16px'}
             />
+            {/* 聊天的标题，优先展示自定义的 title */}
             <Box flex={'1 0 0'} ml={3} className="textEllipsis">
               {item.customTitle || item.title}
             </Box>
+            {/*  */}
             {!!item.id && (
               <Flex gap={2} alignItems={'center'}>
                 {item.hasBeenRead === false &&
                 item.chatGenerateStatus !== ChatGenerateStatusEnum.generating ? (
+                  // 显示未读状态，因为用户发起对话后，切换到其他的对话
                   <Box
                     className="unreadDot"
                     w={'8px'}
@@ -177,10 +184,14 @@ const ChatSliderList = () => {
                     }
                   >
                     {item.chatGenerateStatus === ChatGenerateStatusEnum.generating
-                      ? t('chat:history_generating')
-                      : t(formatTimeToChatTime(item.updateTime) as any).replace('#', ':')}
+                      ? // 正在生成中，展示 generating 文本
+                        t('chat:history_generating')
+                      : // 否则展示日期信息
+                        t(formatTimeToChatTime(item.updateTime) as any).replace('#', ':')}
                   </Box>
                 )}
+
+                {/* 聊天行末尾悬浮时展示的操作按钮 */}
                 <Box className="more" display={['block', 'none']}>
                   <MyMenu
                     Button={
@@ -194,6 +205,7 @@ const ChatSliderList = () => {
                     menuList={[
                       {
                         children: [
+                          // Pin 按钮
                           {
                             label: item.top
                               ? t('common:core.chat.Unpin')
@@ -206,7 +218,7 @@ const ChatSliderList = () => {
                               });
                             }
                           },
-
+                          // Custom Title 按钮
                           {
                             label: t('common:custom_title'),
                             icon: 'common/customTitleLight',
@@ -221,6 +233,7 @@ const ChatSliderList = () => {
                               });
                             }
                           },
+                          // Delete 按钮
                           {
                             label: t('common:Delete'),
                             icon: 'delete',

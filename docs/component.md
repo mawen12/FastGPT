@@ -2,6 +2,13 @@
 
 展示核心组件。
 
+## AppChatWindow
+
+不带有侧边的聊天组件。
+- SideBar
+- ChatHeader
+- ChatBox
+
 ## ChatItem
 
 通用的消息内容展示组件。
