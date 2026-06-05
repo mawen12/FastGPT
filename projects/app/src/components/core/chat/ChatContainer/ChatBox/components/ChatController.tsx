@@ -98,6 +98,7 @@ const ChatController = ({
             }
           }}
         >
+          {/* Copy 按钮 */}
           <MyTooltip label={t('common:Copy')}>
             <MyIcon
               {...controlIconStyle}
@@ -107,6 +108,8 @@ const ChatController = ({
               onClick={() => copyData(chatText)}
             />
           </MyTooltip>
+
+          {/*  */}
           {!!onDelete && !isChatting && chatType !== 'log' && (
             <>
               {onRetry && (
