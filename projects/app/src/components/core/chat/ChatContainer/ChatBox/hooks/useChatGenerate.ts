@@ -493,18 +493,25 @@ export const useChatGenerate = ({
     resumeControllerRef.current?.abort(new Error(reason));
   });
 
+  // 发送消息
   const sendPrompt = useMemoizedFn<SendPromptFnType>(
     ({
+      // 文本内容
       text = '',
+      // 文件列表
       files = [],
+      // 历史记录
       history = chatRecords,
       interactive,
       autoTTSResponse = false,
       hideInUI = false
     }) => {
+      // 执行表单提交
       variablesForm.handleSubmit(
         async ({ variables = {} }) => {
+          // 校验聊天状态
           if (!onStartChat) return;
+          // 当前聊天尚未结束，不允许再次发送消息
           if (isRoundPending) {
             if (!hideInUI) {
               toast({
@@ -517,8 +524,10 @@ export const useChatGenerate = ({
 
           questionGuideControllerRef.current?.abort(new Error('stop'));
 
+          // 对用户输入的内容去除首尾空格
           text = text.trim();
 
+          // 当没有文本或者文件长度时，无法发起聊天
           if (!text && files.length === 0) {
             toast({
               title: t('chat:content_empty'),
@@ -527,9 +536,12 @@ export const useChatGenerate = ({
             return;
           }
 
+          // 合法化请求参数，过滤非法的参数
           const requestVariables = formatChatRequestVariables({ variableList, variables });
 
+          // 生成 human 聊天ID
           const humanChatId = getNanoid(24);
+          // 生成该对话的响应聊天ID
           const responseChatId = getNanoid(24);
 
           if (autoTTSResponse) {
@@ -537,6 +549,7 @@ export const useChatGenerate = ({
             setAudioPlayingChatId(responseChatId);
           }
 
+          // 构造 human 聊天，即用户输入的聊天
           const currentHumanChat: HumanChatSiteItemType = {
             id: humanChatId,
             dataId: humanChatId,
@@ -544,14 +557,19 @@ export const useChatGenerate = ({
             time: new Date(),
             hideInUI,
             value: [
+              // 聊天输入的文件
               ...files.map((file) => ({
                 file: {
+                  // 文件类型
                   type: file.type,
+                  // 文件名称
                   name: file.name,
+                  // 文件上传后的 url
                   url: file.url,
                   key: file.key || ''
                 }
               })),
+              // 人类聊天输入的文本
               ...(text
                 ? [
                     {
@@ -562,45 +580,63 @@ export const useChatGenerate = ({
                   ]
                 : [])
             ] as UserChatItemValueItemType[],
+            // 此处为人类聊天内容结束
             status: ChatStatusEnum.finish
           };
 
+          // 构造最新的聊天记录，加入 human 的对话，和 ai 待返回的对话
           const newChatList: ChatSiteItemType[] = [
+            // 加入历史记录
             ...history,
+            // 加入当前人类输入的内容
             currentHumanChat,
+            // 构造 AI 的待响应内容
             {
               id: responseChatId,
               dataId: responseChatId,
               obj: ChatRoleEnum.AI,
               value: [
                 {
+                  // ai 待返回的内容
                   text: {
                     content: ''
                   }
                 }
               ],
+              // 处于 loading 状态
               status: ChatStatusEnum.loading
             }
           ];
+
+          // 从消息中提取作为 chat title 的文本
           const temporaryHistoryTitle = getChatTitleFromChatMessage(currentHumanChat);
 
           resumedChatTargetRef.current = `${appId}:${chatId}`;
 
+          // 设置聊天的数据
           setChatBoxData((state) =>
+            // 检查是否位于当前聊天
             state.appId === appId && state.chatId === chatId
               ? {
                   ...state,
+                  // 设置 chat 的 title
                   title: temporaryHistoryTitle,
+                  // 该 chat 为生成中的状态
                   chatGenerateStatus: ChatGenerateStatusEnum.generating,
+                  // 设置为尚未读取
                   hasBeenRead: false
                 }
-              : state
+              : // 非当前聊天，无需修改 state
+                state
           );
+
+          // 同步到左侧聊天框的 status + title + hasBeenRead
           syncSidebarChatGenerateStatus(ChatGenerateStatusEnum.generating, {
             hasBeenRead: false,
             title: temporaryHistoryTitle
           });
 
+          // 回写聊天记录
           setChatRecords(
             interactive
               ? rewriteHistoriesByInteractiveResponse({
@@ -611,15 +647,19 @@ export const useChatGenerate = ({
               : newChatList
           );
 
+          // 重置输入框的值
           resetInputVal({});
           setQuestionGuide([]);
+          // 滚动到底部
           scrollToBottom('smooth', 100);
 
+          // 构造停止fetch请求
           const abortSignal = new AbortController();
 
           try {
             chatControllerRef.current = abortSignal;
 
+            // 构造可用于 ai 请求的对话
             const messages = chats2GPTMessages({
               messages: newChatList.slice(0, -1).map((item) => {
                 if (item.obj === ChatRoleEnum.Human) {
@@ -634,6 +674,7 @@ export const useChatGenerate = ({
               reserveTool: true
             });
 
+            // 发送 ai 请求
             const { responseText } = await onStartChat({
               messages,
               responseChatItemId: responseChatId,
@@ -643,6 +684,8 @@ export const useChatGenerate = ({
             });
 
             let newChatHistories: ChatSiteItemType[] = [];
+
+            //
             setChatRecords((state) => {
               newChatHistories = state.map((item, index) => {
                 if (index !== state.length - 1) return item;
@@ -696,6 +739,7 @@ export const useChatGenerate = ({
               shouldUpdateChatBoxData: (state) => state.appId === appId && state.chatId === chatId
             });
           } catch (err: any) {
+            // 处理异常
             if (isAbortByLeave(err)) {
               return;
             }

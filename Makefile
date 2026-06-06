@@ -6,9 +6,9 @@ image=null
 .PHONY: build
 
 # 检查 target 是否定义
-ifndef name
-$(error name is not defined)
-endif
+#ifndef name
+#$(error name is not defined)
+#endif
 
 projectDir=$(or $(wildcard ./projects/$(name)),$(wildcard ./pro/$(name)))
 
@@ -29,3 +29,7 @@ else ifeq ($(proxy), clash)
 else
 	docker build --progress=plain -f $(filePath) -t $(image) .
 endif
+
+dev:
+	cd deploy/dev && podman compose up -d
+	cd projects/app && pnpm dev

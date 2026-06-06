@@ -23,9 +23,13 @@ type ContextProps = {
   showAvatar?: boolean;
 };
 type ChatBoxDataType = {
+  // 当前聊天的Id
   chatId?: string;
+  // 所属应用的Id
   appId: string;
+  // 聊天的标题
   title?: string;
+  // 使用用户头像作为该聊天的头像
   userAvatar?: string;
   /** 与 init 接口对齐；侧栏轮询、ChatBox `enableAutoResume` 依赖其是否为 generating */
   chatGenerateStatus?: ChatGenerateStatusEnum;

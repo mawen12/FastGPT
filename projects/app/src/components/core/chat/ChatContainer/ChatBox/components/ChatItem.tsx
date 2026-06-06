@@ -59,14 +59,17 @@ const shouldFilterAiValue = (item: AIChatItemValueItemType) => {
 };
 
 const colorMap = {
+  // 加载中为灰色
   [ChatStatusEnum.loading]: {
     bg: 'myGray.100',
     color: 'myGray.600'
   },
+  // 运行中为绿色
   [ChatStatusEnum.running]: {
     bg: 'green.50',
     color: 'green.700'
   },
+  // 状态完成为绿色
   [ChatStatusEnum.finish]: {
     bg: 'green.50',
     color: 'green.700'
@@ -92,12 +95,19 @@ ${JSON.stringify(questionGuides)}`}
   );
 };
 
+// 用户输入卡片
 const HumanContentCard = React.memo(
   function HumanContentCard({ chatValue }: { chatValue: UserChatItemValueItemType[] }) {
+    // text 是用户输入的内容文本
     const { text, files = [] } = formatChatValue2InputType(chatValue);
+
+    console.log('human: text ', text);
+
     return (
       <Flex flexDirection={'column'} gap={4}>
+        {/* 展示上传的文件列表 */}
         {files.length > 0 && <FilesBlock files={files} />}
+        {/* 展示输入的文本内容 */}
         {text && (
           <Box
             fontSize={'inherit'}
@@ -113,6 +123,8 @@ const HumanContentCard = React.memo(
   },
   (prevProps, nextProps) => isEqual(prevProps.chatValue, nextProps.chatValue)
 );
+
+// AI 返回的内容卡片
 const AIContentCard = React.memo(function AIContentCard({
   chatValue,
   responseData,
@@ -130,12 +142,22 @@ const AIContentCard = React.memo(function AIContentCard({
   questionGuides: string[];
   onOpenCiteModal: (e?: OnOpenCiteModalProps) => void;
 }) {
+  // 结构为: {"reasoning": {"content": "xxx"}, "text": {"content": "xxx"}}
+  // reasoning 为 think 返回的内容
+  // text 为正式的回复内容
   const lastValue = chatValue[chatValue.length - 1];
   const lastHasText = !!lastValue?.text?.content?.trim();
+  // 思考内容
   const lastHasReasoning = !!lastValue?.reasoning?.content?.trim();
+
+  console.log('ai: lastValue ', lastValue);
+  console.log('ai: lastHasText ', lastHasText);
+  console.log('ai: lastHasReasoning ', lastHasReasoning);
+
   return (
     <Flex flexDirection={'column'}>
       {chatValue.map((value, i) => {
+        // 是否是最后一条回复
         const isLastResponse = isLastChild && i === chatValue.length - 1;
         const key = `${dataId}-ai-${i}`;
 
@@ -366,7 +388,7 @@ const ChatItem = (props: Props) => {
                 fontSize={styleMap.fontSize}
                 color={styleMap.color}
                 fontWeight={styleMap.fontWeight}
-                // 当展示为 chatLog 时，则一直展示，否则就是悬浮时展示
+                // 当展示为 chatLog 时，则一直展示，否则隐藏
                 display={isChatLog ? 'block' : 'none'}
               >
                 {/* 仅展示 HH:mm */}
@@ -399,6 +421,7 @@ const ChatItem = (props: Props) => {
             bg={chatStatusMap.bg}
             fontSize={'sm'}
           >
+            {/* 展示 */}
             <Box
               className={styles.statusAnimation}
               bg={chatStatusMap.color}
@@ -486,6 +509,7 @@ const ChatItem = (props: Props) => {
                     onOpenCiteModal={onOpenCiteModal}
                   />
                   {i === splitAiResponseResults.length - 1 && (
+                    // 底部的标签
                     <ResponseTags
                       showTags={!isLastChild || !isChatting}
                       historyItem={chat}

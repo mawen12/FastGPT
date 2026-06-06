@@ -142,6 +142,7 @@ const ChatController = ({
               if (isPlayingChat && audioPlaying) {
                 return (
                   <Flex alignItems={'center'}>
+                    {/* 语音停止 */}
                     <MyTooltip label={t('common:core.chat.tts.Stop Speech')}>
                       <MyIcon
                         {...controlIconStyle}
@@ -155,6 +156,7 @@ const ChatController = ({
                   </Flex>
                 );
               }
+              // 语音加载中
               if (isPlayingChat && audioLoading) {
                 return (
                   <MyTooltip label={t('common:Loading')}>
@@ -163,6 +165,7 @@ const ChatController = ({
                 );
               }
               return (
+                // 语音
                 <MyTooltip label={t('common:core.app.TTS start')}>
                   <MyIcon
                     {...controlIconStyle}
@@ -191,6 +194,7 @@ const ChatController = ({
                 </MyTooltip>
               );
             })()}
+          {/*  */}
           {!!onMark && (
             <MyTooltip label={t('common:core.chat.Mark')}>
               <MyIcon

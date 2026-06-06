@@ -27,16 +27,20 @@ export const hasContextCheckpoint = (history: ChatItemMiniType) =>
   history.obj === ChatRoleEnum.AI &&
   history.value.some((value) => Boolean(value.contextCheckpoint));
 
+// 从消息中提取作为 chat title 的文本
 export const getChatTitleFromChatMessage = (
   message?: ChatItemMiniType,
   defaultValue = '新对话'
 ) => {
+  // 提取其中的 text 字段
   const textMsg = message?.value.find((item) => 'text' in item && item.text);
 
+  // 返回其中的前20个字段
   if (textMsg?.text?.content) {
     return textMsg.text.content.slice(0, 20);
   }
 
+  // 否则返回默认值
   return defaultValue;
 };
 

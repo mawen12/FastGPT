@@ -181,6 +181,7 @@ const Provider = ({
     (v) => v.chatBoxData?.app?.chatConfig?.fileSelectConfig ?? defaultAppSelectFileConfig
   );
 
+  // 单个 chat 的聊天记录
   const chatRecords = useContextSelector(ChatRecordContext, (v) => v.chatRecords);
   const setChatRecords = useContextSelector(ChatRecordContext, (v) => v.setChatRecords);
 
@@ -204,6 +205,7 @@ const Provider = ({
   const autoTTSResponse =
     whisperConfig?.open && whisperConfig?.autoSend && whisperConfig?.autoTTSResponse && hasAudio;
 
+  // 最后一条记录存在，且不为 finish，则视为聊天中
   const isChatting = useMemo(
     () =>
       chatRecords[chatRecords.length - 1] &&

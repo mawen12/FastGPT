@@ -249,6 +249,7 @@ const ResponseTags = ({
 
       {notEmptyTags && (
         <Flex alignItems={'center'} mt={3} flexWrap={'wrap'} gap={2}>
+          {/* 显示请求耗时 */}
           {isPc && durationSeconds > 0 && (
             <MyTooltip label={t('chat:module_runtime_and')}>
               <MyTag colorSchema="purple" type="borderSolid" cursor={'default'}>
@@ -287,6 +288,7 @@ const ResponseTags = ({
             </>
           )}
 
+          {/* View Details */}
           {notSharePage && showWholeResponse && (
             <MyTooltip label={t('common:core.chat.response.Read complete response tips')}>
               <MyTag

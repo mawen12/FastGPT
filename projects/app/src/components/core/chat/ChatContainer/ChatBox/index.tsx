@@ -144,7 +144,11 @@ const ChatBox = ({
   const welcomeText = useContextSelector(ChatBoxContext, (v) => v.welcomeText);
   const variableList = useContextSelector(ChatBoxContext, (v) => v.variableList);
   const questionGuide = useContextSelector(ChatBoxContext, (v) => v.questionGuide);
+
+  // 最后一条记录存在，且不为 finish，则视为聊天中
   const isChatting = useContextSelector(ChatBoxContext, (v) => v.isChatting);
+
+  // 判断当前这一轮对话是否还在进行中（pending）
   const isRoundPending = isChatRoundPending({
     isChatting,
     chatGenerateStatus:
@@ -156,27 +160,33 @@ const ChatBox = ({
 
   const syncSidebarChatGenerateStatus = useSidebarChatGenerateStatus();
 
+  // 标记该 chat 记录已读
   const markChatRead = useMemoizedFn(async (data: MarkChatReadBodyType) => {
     if (!enableMarkChatRead) return;
 
     return onMarkChatRead?.(data) ?? postMarkChatRead(data);
   });
+
+  // 请求停止聊天
   const requestStopChat = useMemoizedFn(async (): Promise<StopChatFnResult> => {
     if (onStopChat) {
       return onStopChat();
     }
 
+    // 调用 /v2/chat/stop 接口，停止聊天
     const result = await postStopV2Chat({
       appId,
       chatId,
       outLinkAuthData
     });
 
+    // 返回结果
     return {
       chatGenerateStatus: result.chatGenerateStatus ?? ChatGenerateStatusEnum.done,
       completed: result.completed
     };
   });
+
   const finishChatGenerateStatus = useMemoizedFn(
     ({
       status,
@@ -322,11 +332,15 @@ const ChatBox = ({
   });
 
   const statusBoxData = useCreation(() => {
+    // 如果此时没有聊天，则无任何状态
     if (!isChatting) return;
+    // 读取最后一条记录，如果此时没有数据，则无任何状态
     const chatContent = chatRecords[chatRecords.length - 1];
     if (!chatContent) return;
 
+    // 读取内容的状态，并使用 loading 作为兜底
     return {
+      // loading -> running -> finish
       status: chatContent.status || ChatStatusEnum.loading,
       name: t(chatContent.moduleName || ('' as any)) || t('common:Loading')
     };

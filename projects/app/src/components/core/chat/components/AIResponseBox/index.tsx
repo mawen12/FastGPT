@@ -21,6 +21,9 @@ import RenderTool from './RenderTool';
 import RenderUserFormInteractive from './RenderUserFormInteractive';
 import RenderUserSelectInteractive from './RenderUserSelectInteractive';
 
+/**
+ * Ai 回复内容   不               i
+ */
 const AIResponseBox = ({
   chatItemDataId,
   value,
@@ -50,6 +53,7 @@ const AIResponseBox = ({
 
   const responseBlocks: React.ReactNode[] = [];
 
+  // ai 的思考过程
   if (reasoningContent && !value.hideReason) {
     responseBlocks.push(
       <RenderReasoningContent
@@ -62,6 +66,7 @@ const AIResponseBox = ({
     );
   }
 
+  // ai 的回复内容
   if (value.text && textContent) {
     responseBlocks.push(
       <RenderText
@@ -75,6 +80,7 @@ const AIResponseBox = ({
     );
   }
 
+  //
   if (tools && showRunningStatus) {
     responseBlocks.push(
       <Box key="tools">

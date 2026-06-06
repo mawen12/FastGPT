@@ -129,11 +129,16 @@ const ChatInput = ({
   /* on send */
   const handleSend = useCallback(
     async (val: string = inputValue) => {
+      // 如果不允许发送， 则退出
       if (!canSendMessage) return;
 
+      // 调用发送
       onSendMessage({
+        // 输入的文本内容
         text: val.trim(),
+        // 上传的文件列表
         files: fileList,
+        //
         interactive: lastInteractive
       });
       replaceFiles([]);
@@ -216,6 +221,7 @@ const ChatInput = ({
               // enter send.(pc or iframe && enter and unPress shift)
               const isEnter = e.key === 'Enter';
               const textarea = e.currentTarget;
+              // ctrl/alt + entry 创建新的一行
               if (isEnter && (e.ctrlKey || e.altKey)) {
                 // Add a new line
                 const index = textarea.selectionStart;
@@ -230,11 +236,12 @@ const ChatInput = ({
                 return;
               }
 
-              // Select all content
+              // ctrl + a 选中所有内容
               if (e.key === 'a' && e.ctrlKey) {
                 textarea.select();
               }
 
+              // 处理发送的
               if ((isPc || window !== parent) && e.keyCode === 13 && !e.shiftKey) {
                 handleSend(textarea.value);
                 e.preventDefault();

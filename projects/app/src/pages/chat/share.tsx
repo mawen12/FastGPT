@@ -151,6 +151,7 @@ const OutLink = (props: Props) => {
     }
   }, [data, isChatRecordsLoaded]);
 
+  // 开启聊天记录
   const startChat = useCallback(
     async ({
       messages,
@@ -160,6 +161,7 @@ const OutLink = (props: Props) => {
       responseChatItemId
     }: StartChatFnProps) => {
       const completionChatId = chatId || getNanoid();
+      //
       const histories = messages.slice(-1);
 
       //post message to report chat start
@@ -173,6 +175,7 @@ const OutLink = (props: Props) => {
         '*'
       );
 
+      // 流模式构造请求
       const { responseText } = await streamFetch({
         data: {
           messages: histories,

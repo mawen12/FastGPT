@@ -38,10 +38,12 @@ type Props = {
 const Markdown = (props: Props) => {
   const source = props.source || '';
 
+  // 当长度小于 20w 时，采用 Markdown 渲染
   if (source.length < 200000) {
     return <MarkdownRender {...props} />;
   }
 
+  // 否则采用普通直接渲染
   return <Box whiteSpace={'pre-wrap'}>{source}</Box>;
 };
 const MarkdownRender = ({
