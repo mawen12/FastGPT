@@ -676,10 +676,14 @@ export const useChatGenerate = ({
 
             // 发送 ai 请求
             const { responseText } = await onStartChat({
+              // 包含历史记录和当前human对话+AI预回复的内容
               messages,
+              // 回复聊天Id
               responseChatItemId: responseChatId,
               controller: abortSignal,
+              //
               generatingMessage: (e) => generatingMessage({ ...e, autoTTSResponse }),
+              // 请求变量
               variables: requestVariables
             });
 

@@ -32,13 +32,14 @@ flowchart TD
 A[开始] --> B[sendPrompt]
 B --> C[参数校验]
 C -- 非法 --> D[toast 报错]
-C -- 合法 --> E[生成Human聊天对话:finished]
-E --> F[生成 AI 聊天对话:loading]
-F --> G[使用历史对话+上述对话，构成新纪录]
-G --> H[更新 ChatBoxData]
+C -- 合法 --> E[生成Human聊天对话:finished\n生成 AI 聊天对话:loading\n使用历史对话+上述对话，构成新纪录]
+E --> H[更新 ChatBoxData]
 H --> I[更新侧边栏的Title及状态]
 I --> J[回写聊天记录]
-J --> K[情况输入框的值] 
+J --> K[清空输入框的值]
+K --> L[滚动到底部]
+L --> M[发起api的流式请求]
+M --> N[1]
 
 ```
 
