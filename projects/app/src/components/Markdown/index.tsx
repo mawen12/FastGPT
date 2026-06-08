@@ -55,6 +55,7 @@ const MarkdownRender = ({
   chatAuthData,
   onOpenCiteModal
 }: Props) => {
+  // 自定义渲染组件映射，此处自定义了 img/pre/code/table/a
   const components = useCreation(() => {
     return {
       img: (props: any) => <Image {...props} alt={props.alt} chatAuthData={chatAuthData} />,
@@ -72,6 +73,7 @@ const MarkdownRender = ({
     };
   }, [chatAuthData, onOpenCiteModal, showAnimation]);
 
+  // 对输入文本进行预处理，如果 showAnimation 或 showAnimation 为真时，直接使用原文，否则进行中文文本格式优化
   const formatSource = useMemo(() => {
     if (showAnimation || forbidZhFormat) return source;
     return mdTextFormat(source);

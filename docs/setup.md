@@ -211,7 +211,10 @@
 
 ```bash
 > cd deploy/dev
+# 如果安装了 docker
 > docker compose up -d
+# 如果安装了 podman
+> podman-compose up -d
 > cd projects/app
 > cp .env.template .env.local
 > cp data/config.json data/config.local.json
